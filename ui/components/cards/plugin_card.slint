@@ -1,0 +1,75 @@
+import { Theme } from "../../theme/theme.slint";
+import { Icons } from "../../services/icons.slint";
+import { QuickAction } from "../../pages/dashboard/data.slint";
+
+export component PluginCard inherits Rectangle {
+    in property <QuickAction> data;
+
+    height: 56px;
+
+    Rectangle {
+        border-width: 1px;
+        x: ta.has-hover ? 4px : 0px;
+        border-radius: Theme.radius_md;
+        background: ta.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
+        border-color: ta.has-hover ? Theme.border_secondary : Theme.border_primary;
+
+        animate x {
+            duration: Theme.transition_fast;
+            easing: ease;
+        }
+
+        animate drop-shadow-blur {
+            duration: Theme.transition_fast;
+            easing: ease;
+        }
+
+        ta := TouchArea {
+            mouse-cursor: pointer;
+            clicked => {
+            }
+        }
+
+        HorizontalLayout {
+            spacing: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+
+            VerticalLayout {
+                width: 36px;
+                alignment: center;
+
+                Rectangle {
+                    clip: true;
+                    width: 36px;
+                    height: self.width;
+                    background: Theme.bg_card;
+                    border-radius: Theme.radius_md;
+                    Image {
+                        source: data.icon;
+                        colorize: Theme.accent;
+                        width: parent.width - 18px;
+                    }
+                }
+            }
+
+            VerticalLayout {
+                spacing: 3px;
+                alignment: center;
+                horizontal-stretch: 1;
+
+                Text {
+                    text: data.title;
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                }
+
+                Text {
+                    font-size: 0.77rem;
+                    text: data.sub_title;
+                    color: Theme.text_tertiary;
+                }
+            }
+        }
+    }
+}

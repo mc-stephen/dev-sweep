@@ -241,13 +241,16 @@ export component AppWindow inherits Window {
 
     in-out property <int> active-page: 0;
 
+    out property <length> card_width: c.width;
+    out property <length> card_height: c.height;
+
     no-frame: true;
     preferred-width: 1000px;
     preferred-height: 600px;
     background: transparent;
     // resize-border-width: 6px;
-    
-    Rectangle {
+
+    c := Rectangle {
         clip: true;
         width: 100%;
         height: 100%;
@@ -287,3 +290,37 @@ export component AppWindow inherits Window {
         }
     }
 }
+
+// export component MainWindow inherits Window {
+//     callback window_resized(width: int, height: int);
+
+//     out property <int> card_width: 0;
+//     out property <int> card_height: 0;
+
+//     // internal memory of the last seen size
+//     property <int> last_card_width: -1;
+//     property <int> last_card_height: -1;
+
+//     c := Card { /* ... */ }
+
+//     card_width: c.width;
+//     card_height: c.height;
+
+//     // conditional invisible Rectangle that is (re)created whenever the size differs.
+//     // Its `init` runs the first time the Rectangle is instantiated for that change,
+//     // so we use it to forward the callback to Rust.
+//     if (root.last_card_width != root.card_width || root.last_card_height != root.card_height) : Rectangle {
+//         visible: false;
+//         width: 0;
+//         height: 0;
+
+//         init => {
+//             // avoid firing on initial -1 -> actual-size transition if you want to skip the first call
+//             if (root.last_card_width != -1) {
+//                 root.window_resized(root.card_width, root.card_height);
+//             }
+//             root.last_card_width = root.card_width;
+//             root.last_card_height = root.card_height;
+//         }
+//     }
+// }

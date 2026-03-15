@@ -1,7 +1,7 @@
 
-import { Theme } from "../theme/theme.slint";
-import { Icons } from "../services/icons.slint";
-import { HorizontalDivider } from "divider/horizontal_divider.slint";
+import { Theme } from "../../theme/theme.slint";
+import { Icons } from "../../services/icons.slint";
+import { HorizontalDivider } from "../divider/horizontal_divider.slint";
 
 component CardHeader inherits HorizontalLayout {
     in property <string> title;
@@ -13,7 +13,6 @@ component CardHeader inherits HorizontalLayout {
     spacing: 4px;
     padding: 15px;
     vertical-stretch: 0;
-    horizontal-stretch: 1;
 
     Image {
         width: 17px;
@@ -32,6 +31,7 @@ component CardHeader inherits HorizontalLayout {
     }
 
     if hasMore:   Rectangle {
+
         ta := TouchArea {
             mouse-cursor: pointer;
             clicked => moreClicked();
@@ -39,7 +39,6 @@ component CardHeader inherits HorizontalLayout {
 
         HorizontalLayout {
             spacing: 3px;
-            horizontal-stretch: 1;
 
             Text {
                 text: "View All";
@@ -71,7 +70,6 @@ export component Card inherits Rectangle {
 
     clip: true;
     border-width: 1px;
-    horizontal-stretch: 1;
     background: Theme.bg_card;
     border-radius: Theme.radius_lg;
     border-color: Theme.border_primary;

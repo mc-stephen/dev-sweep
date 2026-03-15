@@ -1,4 +1,10 @@
 import { Icons } from "../../services/icons.slint";
+import { Card } from "../../components/cards/card.slint";
+
+// export struct Size {
+//     width: length,
+//     height: length,
+// }
 
 export struct StatData {
     icon: image,
@@ -24,6 +30,8 @@ export struct RecentActivity {
 }
 
 export global DashboardAdapter {
+    // in-out property <Size> size;
+
     in-out property <[RecentActivity]> recent_activity: [
         {
             tag: "clean",
@@ -41,17 +49,17 @@ export global DashboardAdapter {
             sub_title: "Scan your filesystem for dev projects",
         },
         {
-            icon: Icons.newScan,
+            icon: Icons.quickClean,
             title: "Quick Clean",
             sub_title: "Clean all detected projects at once",
         },
         {
-            icon: Icons.newScan,
+            icon: Icons.addCleaner,
             title: "Add New Cleaner",
             sub_title: "Import a custom cleaner config",
         },
         {
-            icon: Icons.newScan,
+            icon: Icons.documentation,
             title: "Documentation",
             sub_title: "Learn how to create custom cleaners",
         },

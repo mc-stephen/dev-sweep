@@ -3,6 +3,7 @@ import { Icons } from "../services/icons.slint";
 import { HorizontalBox } from "std-widgets.slint";
 
 export component MyEmptyActivityComponent inherits Rectangle {
+
     VerticalLayout {
         spacing: 4px;
         alignment: center;
@@ -15,6 +16,7 @@ export component MyEmptyActivityComponent inherits Rectangle {
                 height: self.width;
                 source: Icons.newScan;
                 colorize: Theme.text_tertiary;
+                horizontal-alignment: center;
             }
         }
 

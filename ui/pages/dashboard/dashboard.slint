@@ -1,16 +1,23 @@
 import { DashboardAdapter } from "./data.slint";
 import { Theme } from "../../theme/theme.slint";
-import { Card } from "../../components/card.slint";
 import { Icons } from "../../services/icons.slint";
+import { Card } from "../../components/cards/card.slint";
 import { QuickAction, RecentActivity } from "./data.slint";
-import { StatCard } from "../../components/stat_card.slint";
-import { HorizontalBox, ScrollView, ListView } from "std-widgets.slint";
+import { StatCard } from "../../components/cards/stat_card.slint";
+// import { Size } from "./data.slint";
+import {
+    HorizontalBox,
+    ScrollView,
+    ListView,
+    GridBox,
+} from "std-widgets.slint";
 import {
     HorizontalDivider,
 } from "../../components/divider/horizontal_divider.slint";
 import {
     MyEmptyActivityComponent,
 } from "../../components/empty_activity.slint";
+import { PluginCard } from "../../components/cards/plugin_card.slint";
 
 
 //===============================
@@ -49,7 +56,6 @@ component QuickActionComp inherits Rectangle {
 
         HorizontalLayout {
             spacing: 10px;
-            alignment: start;
             padding-left: 10px;
             padding-right: 10px;
 
@@ -136,6 +142,7 @@ component RecentActivityComp inherits VerticalLayout {
                     height: self.width;
                     border-radius: Theme.radius_sm;
                     background: Theme.accent.with-alpha(0.1);
+
                     Image {
                         colorize: Theme.accent;
                         width: parent.width - 14px;
@@ -165,7 +172,6 @@ component RecentActivityComp inherits VerticalLayout {
             VerticalLayout {
                 spacing: 4px;
                 alignment: center;
-                horizontal-stretch: 0;
 
                 Text {
                     text: "2d ago";
@@ -203,8 +209,12 @@ component RecentActivityComp inherits VerticalLayout {
 }
 
 export component DashboardPage inherits Flickable {
+    // out property <Size> size;
+
     horizontal-stretch: 1;
     min-width: layout.min-width + 40px;
+
+    // size: { width: c.width, height: c.height };
 
     TouchArea {
         clicked => {
@@ -223,6 +233,7 @@ export component DashboardPage inherits Flickable {
         //===============================
         layout := HorizontalLayout {
             spacing: 15px;
+
             for data in DashboardAdapter.stats: StatCard {
                 data: data;
             }
@@ -235,6 +246,7 @@ export component DashboardPage inherits Flickable {
             spacing: 15px;
 
             Card {
+                width: 50%;
                 title: "Quick Actions";
                 source: Icons.quickAction;
 
@@ -259,7 +271,6 @@ export component DashboardPage inherits Flickable {
 
                 if  DashboardAdapter.recent_activity.length != 0: ListView {
                     vertical-stretch: 1;
-                    horizontal-stretch: 1;
 
                     for data[i] in DashboardAdapter.recent_activity: RecentActivityComp {
                         i: i;
@@ -273,13 +284,24 @@ export component DashboardPage inherits Flickable {
         //===============================
         // Active Plugins Section
         //===============================
-        Card {
+
+        c := Card {
             hasMore: true;
             title: "Available Cleaners";
             source: Icons.AvailableCleaners;
 
-            Rectangle {
-                min-height: 200px;
+            // changed width => {
+            //     debug(c.width);
+            // }
+
+            GridBox {
+                // padding: c.width > 0 ? 0px : 15px;
+
+                for data[i] in 20: PluginCard {
+                    row: Math.floor(i / 6);
+                    max-width: 250px;
+                    data: DashboardAdapter.quick_action[0];
+                }
             }
         }
     }
