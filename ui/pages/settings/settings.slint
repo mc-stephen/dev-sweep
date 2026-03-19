@@ -1,0 +1,372 @@
+import { Theme } from "../../theme/theme.slint";
+import { SettingsData } from "settings_data.slint";
+import { Icons } from "../../services/icons.slint";
+import { Card } from "../../components/cards/card.slint";
+import { TextField } from "../../components/text_field.slint";
+import { GridBox, TextEdit, ComboBox } from "std-widgets.slint";
+import { ToggleSwitch } from "../../components/toggle_switch.slint";
+import { IconButton } from "../../components/buttons/icon_button.slint";
+import {
+    HorizontalDivider,
+} from "../../components/divider/horizontal_divider.slint";
+
+//=================================
+//
+//=================================
+component Rect inherits HorizontalLayout {
+    in property <string> title;
+    in property <string> label;
+
+    spacing: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    alignment: space-between;
+
+    VerticalLayout {
+        spacing: 6px;
+        alignment: start;
+
+        Text {
+            text: title;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        Text {
+            text: label;
+            font-size: 0.8rem;
+            color: Theme.text_tertiary;
+        }
+    }
+
+    @children
+}
+
+export component SettingsPage inherits GridBox {
+
+    // property <length> card_width: 33.3%;
+
+    //****************************************/
+    Card {
+        // width: 32%;
+        title: "Appearance";
+        source: Icons.addCleaner;
+
+        VerticalLayout {
+            alignment: start;
+            padding-left: 15px;
+            padding-right: 15px;
+
+            Rect {
+                title: "Theme";
+                label: "Choose between dark and light mode";
+
+                ComboBox {
+                    current-index: 0;
+                    model: ["Dark Mode", "Light Mode", "System Default"];
+                }
+            }
+
+            HorizontalDivider {
+                background: Theme.border_primary.with-alpha(0.05);
+            }
+
+            Rect {
+                title: "Accent Color";
+                label: "Customize the primary accent color";
+
+                VerticalLayout {
+                    alignment: center;
+
+                    HorizontalLayout {
+                        spacing: 5px;
+                        for data[i] in SettingsData.theme_colors: Rectangle {
+                            width: 20px;
+                            background: data;
+                            border-width: 2px;
+                            height: self.width;
+                            drop-shadow-blur: 10px;
+                            border-radius: self.width * Theme.radius_full;
+                            drop-shadow-color: color_picker.has-hover ? data : transparent;
+                            border-color: color_picker.has-hover ? Theme.text_primary : transparent;
+                            color_picker := TouchArea {
+                                mouse-cursor: pointer;
+                                clicked => {
+                                    Theme.accent = data;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            HorizontalDivider {
+                background: Theme.border_primary.with-alpha(0.05);
+            }
+
+            Rect {
+                title: "Compact Mode";
+                label: "Reduce padding and margins for smaller screens";
+
+                VerticalLayout {
+                    alignment: center;
+                    ToggleSwitch { }
+                }
+            }
+        }
+    }
+
+    //****************************************/
+    Card {
+        // width: 32%;
+        title: "Safety";
+        source: Icons.addCleaner;
+
+        VerticalLayout {
+            alignment: start;
+            padding-left: 15px;
+            padding-right: 15px;
+
+            Rect {
+                title: "Confirm Before Cleaning";
+                label: "Show confirmation dialog before deleting files";
+
+                VerticalLayout {
+                    alignment: center;
+                    ToggleSwitch { }
+                }
+            }
+
+            HorizontalDivider {
+                background: Theme.border_primary.with-alpha(0.05);
+            }
+
+            Rect {
+                title: "Default Dry Run";
+                label: "Always start in dry-run mode for safety";
+
+                VerticalLayout {
+                    alignment: center;
+                    ToggleSwitch { }
+                }
+            }
+
+            HorizontalDivider {
+                background: Theme.border_primary.with-alpha(0.05);
+            }
+
+            Rect {
+                title: "Skip Git Repositories";
+                label: "Never clean projects with uncommitted changes";
+
+                VerticalLayout {
+                    alignment: center;
+                    ToggleSwitch { }
+                }
+            }
+
+            HorizontalDivider {
+                background: Theme.border_primary.with-alpha(0.05);
+            }
+
+            Rect {
+                title: "Exclude Paths";
+                label: "Directories to always skip during scans";
+
+                Rectangle {
+                    clip: true;
+                    width: 200px;
+                    height: 100px;
+                    border-width: 1px;
+                    background: Theme.bg_input;
+                    border-radius: Theme.radius_md;
+                    drop-shadow-color: Theme.shadow_glow; // accent_glow;
+                    drop-shadow-blur: input.has-focus ? 5px : 0px;
+                    border-color: input.has-focus ? Theme.accent : Theme.border_secondary;
+
+                    VerticalLayout {
+                        padding: 10px;
+
+                        input := TextInput {
+                            single-line: false;
+                            height: parent.height - 10px;
+                            // accepted => input.clear-focus();
+
+                            // Placeholder Logic
+                            if (self.text == ""): Text {
+                                x: 0px;
+                                y: 0px;
+                                // text: root.placeholder;
+                                color: Theme.text_tertiary;
+                                text: "/usr \n/System \n/Library";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //****************************************/
+    Card {
+        // width: 32%;
+        row: 1;
+        source: Icons.addCleaner;
+        title: "Cleaners Directory";
+
+        VerticalLayout {
+            alignment: start;
+            padding-left: 15px;
+            padding-right: 15px;
+
+            Rect {
+                title: "Cleaners Config Path";
+                label: "Location where cleaner JSON configs are stored";
+
+                HorizontalLayout {
+                    spacing: 5px;
+
+                    TextField {
+                        width: 150px;
+                        height: 30px;
+                        show_icon: false;
+                        placeholder: "Cleaner Path";
+                        border-radius: Theme.radius_md;
+                    }
+
+                    IconButton {
+                        height: 30px;
+                        width: self.height;
+                        border_hover: Theme.accent;
+                        icon_size: self.width - 15px;
+                        colorize_hover: Theme.accent;
+                        icon: Icons.AvailableCleaners;
+                        border-radius: Theme.radius_sm;
+                        clicked => {
+                            //
+                        }
+                    }
+                }
+            }
+
+            HorizontalDivider {
+                background: Theme.border_primary.with-alpha(0.05);
+            }
+
+            Rect {
+                title: "Auto-reload Configs";
+                label: "Watch for new cleaner configs automatically";
+
+                VerticalLayout {
+                    alignment: center;
+                    ToggleSwitch { }
+                }
+            }
+        }
+    }
+
+    //****************************************/
+    Card {
+        row: 1;
+        // width: 32%;
+        source: Icons.addCleaner;
+        title: "Cleaners Directory";
+
+        VerticalLayout {
+            spacing: 2px;
+            padding: 15px;
+            alignment: start;
+
+            HorizontalLayout {
+                alignment: center;
+                padding-bottom: 10px;
+
+                Rectangle {
+                    width: 64px;
+                    height: self.width;
+                    border-radius: Theme.radius_lg;
+                    background: @linear-gradient(135deg, Theme.accent, Theme.accent_light);
+                }
+            }
+
+            Text {
+                text: "DevSweep";
+                font-size: 1rem;
+                font-weight: 600;
+                horizontal-alignment: center;
+            }
+
+            Text {
+                font-size: 0.82rem;
+                text: "Version 1.0.0";
+                color: Theme.text-tertiary;
+                horizontal-alignment: center;
+            }
+
+            VerticalLayout {
+                padding-top: 10px;
+
+                Text {
+                    // max-width: 400px;
+                    font-size: 0.88rem;
+                    wrap: TextWrap.word-wrap;
+                    color: Theme.text_secondary;
+                    horizontal-alignment: center;
+                    text: "A cross-platform developer project cleaner. Reclaim disk space by removing build artifacts, caches, and dependencies from your dev projects.";
+                }
+            }
+
+            HorizontalLayout {
+                spacing: 15px;
+                alignment: center;
+                padding-top: 15px;
+                padding-bottom: 15px;
+
+                for data[i] in SettingsData.project_links: Rectangle {
+                    // height: 40px;
+                    border-width: 1px;
+                    background: Theme.bg_tertiary;
+                    border-radius: self.height * Theme.radius_full;
+                    border-color: ta.has-hover ? Theme.accent : Theme.border_primary;
+
+                    ta := TouchArea {
+                        mouse-cursor: pointer;
+                        clicked => {
+                            //
+                        }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 5px;
+                        padding: 8px;
+
+                        VerticalLayout {
+                            alignment: center;
+
+                            Image {
+                                width: 10px;
+                                source: Icons.dashboard;
+                                colorize: ta.has-hover ? Theme.accent : Theme.text_tertiary;
+                            }
+                        }
+
+                        Text {
+                            text: data.label;
+                            font-weight: 500;
+                            font-size: 0.82rem;
+                            vertical-alignment: center;
+                            color: ta.has-hover ? Theme.accent : Theme.text_tertiary;
+                        }
+                    }
+                }
+            }
+
+            Text {
+                font-size: 0.78rem;
+                color: Theme.text_tertiary;
+                horizontal-alignment: center;
+                text: "Made with (Love) for developers everywhere";
+            }
+        }
+    }
+}

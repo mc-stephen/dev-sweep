@@ -1,0 +1,29 @@
+import { Icons } from "../../services/icons.slint";
+
+struct ProjectLink {
+    icon: image,
+    link: string,
+    label: string,
+}
+
+export global SettingsData {
+    out property <[color]> theme_colors: [#6C5CE7, #00B894, #E17055, #0984E3, #E84393, #FDCB6E];
+
+    out property <[ProjectLink]> project_links: [
+        {
+            label: "GitHub",
+            icon: Icons.activeCleaner,
+            link: "https://github.com/mc-stephen/devsweep",
+        },
+        {
+            label: "Docs",
+            icon: Icons.documentation,
+            link: "https://github.com/mc-stephen/devsweep",
+        },
+        {
+            label: "Report Bugs",
+            icon: Icons.dashboard,
+            link: "https://github.com/mc-stephen/devsweep",
+        },
+    ];
+}

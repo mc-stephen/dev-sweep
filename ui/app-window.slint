@@ -2,20 +2,21 @@ import { Theme } from "./theme/theme.slint";
 import { Icons } from "./services/icons.slint";
 import { NavItem } from "components/nav_item.slint";
 import { CleanersPage } from "pages/cleaners.slint";
-import { SettingsPage } from "pages/settings.slint";
 import { TextField } from "components/text_field.slint";
 import { ActivityLogPage } from "pages/activity_log.slint";
+import { SettingsPage } from "pages/settings/settings.slint";
 import { ScanAndCleanPage } from "pages/scan_and_clean.slint";
+import { ToggleSwitch } from "components/toggle_switch.slint";
 import { DashboardPage } from "pages/dashboard/dashboard.slint";
 import { IconButton } from "components/buttons/icon_button.slint";
+export { DashboardAdapter } from "./pages/dashboard/dashboard_data.slint";
 import { TrafficLight } from "components/window_control/traffic_light.slint";
 import { WindowButtons } from "components/window_control/window_buttons.slint";
 import { HorizontalDivider } from "components/divider/horizontal_divider.slint";
 import {
     WindowControl,
 } from "./components/window_control/global_logic/window_control_logic.slint";
-export { DashboardAdapter } from "./pages/dashboard/data.slint";
-export { WindowControl } 
+export { WindowControl }
 import {
     Button,
     VerticalBox,
@@ -134,22 +135,28 @@ import {
                 alignment: center;
                 padding-bottom: 10px;
 
-                Image {
-                    width: 15px;
-                    height: self.width;
-                    source: Icons.moon;
-                    colorize: Theme.text_tertiary;
+                VerticalLayout {
+                    alignment: center;
+
+                    Image {
+                        width: 15px;
+                        height: self.width;
+                        source: Icons.moon;
+                        colorize: Theme.text_tertiary;
+                    }
                 }
 
-                Switch {
-                    checked: true;
-                }
+                ToggleSwitch { }
 
-                Image {
-                    width: 15px;
-                    source: Icons.sun;
-                    height: self.width;
-                    colorize: Theme.text_tertiary;
+                VerticalLayout {
+                    alignment: center;
+
+                    Image {
+                        width: 17px;
+                        source: Icons.sun;
+                        height: self.width;
+                        colorize: Theme.text_tertiary;
+                    }
                 }
             }
 
@@ -261,6 +268,9 @@ export component AppWindow inherits Window {
             spacing: 0px;
             padding: 0px;
 
+            //================================
+            // Body
+            //================================
             Tab {
                 active-page: root.active-page;
                 on_route(index) => {
@@ -286,6 +296,24 @@ export component AppWindow inherits Window {
                 if root.active-page == 2: CleanersPage { }
                 if root.active-page == 3: ActivityLogPage { }
                 if root.active-page == 4: SettingsPage { }
+            }
+        }
+
+        //================================
+        // Notification Dialog
+        //================================
+        VerticalLayout {
+            width: 220px;
+            spacing: 6px;
+            padding: 10px;
+            alignment: end;
+            x: root.width - self.width;
+
+            for data[i] in 0: Rectangle {
+                width: 200px;
+                background: red;
+                min-height: 50px;
+                border-radius: 10px;
             }
         }
     }

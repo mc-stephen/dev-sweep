@@ -1,9 +1,11 @@
 export global Theme {
     // Base palette
     in-out property <color> accent: #6C5CE7;
-    in-out property <color> accent_light: #A29BFE;
-    in-out property <color> accent_dark: #5641CC;
-    in-out property <color> accent_glow: #6c5ce74d; // rgba(108, 92, 231, 0.3);
+    // in-out property <color> accent_light: #A29BFE;
+    in-out property <color> accent_light: accent.brighter(0.3);
+    // in-out property <color> accent_dark: #5641CC;
+    in-out property <color> accent_dark: accent.with-alpha(0.1);
+    // in-out property <color> accent_glow: #6c5ce74d; // rgba(108, 92, 231, 0.3);
 
     // Status colors
     in-out property <color> success: #00B894;
@@ -65,5 +67,5 @@ export global Theme {
     in-out property <string> shadow_md: "0 4px 12px rgba(0,0,0,0.25)";
     in-out property <string> shadow_lg: "0 8px 30px rgba(0,0,0,0.35)";
     in-out property <string> shadow_xl: "0 16px 50px rgba(0,0,0,0.45)";
-    in-out property <color> shadow_glow: #6C5CE74D; // "0 0 20px rgba(108, 92, 231, 0.3)";
+    in-out property <color> shadow_glow: accent_dark; // #6C5CE74D; // "0 0 20px rgba(108, 92, 231, 0.3)";
 }

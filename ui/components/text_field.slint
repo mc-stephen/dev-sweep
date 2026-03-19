@@ -3,13 +3,14 @@ import { Icons } from "../services/icons.slint";
 
 export component TextField inherits Rectangle {
     in property <string> placeholder;
+    in property <bool> show_icon: true;
     in-out property <string> text <=> input.text;
 
     width: 200px;
     height: 35px;
     border-width: 1px;
     background: Theme.bg_input;
-    drop-shadow-color: Theme.accent_glow;
+    drop-shadow-color: Theme.shadow_glow; //accent_glow;
     drop-shadow-blur: input.has-focus ? 3px : 0px;
     border-radius: self.height * Theme.radius_full;
     border-color: input.has-focus ? Theme.accent : Theme.border_primary;
@@ -19,7 +20,7 @@ export component TextField inherits Rectangle {
         padding-left: 12px;
         padding-right: 12px;
 
-        Image {
+        if show_icon: Image {
             width: 12px;
             source: Icons.search;
             colorize: Theme.text_tertiary;
@@ -38,9 +39,9 @@ export component TextField inherits Rectangle {
                 // Placeholder Logic
                 if (self.text == ""): Text {
                     x: 0px;
-                    y: 12.5px;
                     text: root.placeholder;
                     color: Theme.text_tertiary;
+                    y: show_icon ? 12.5px : 10px;
                 }
             }
         }

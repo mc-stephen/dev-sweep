@@ -1,10 +1,13 @@
-import { DashboardAdapter } from "./data.slint";
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
 import { Card } from "../../components/cards/card.slint";
-import { QuickAction, RecentActivity } from "./data.slint";
 import { StatCard } from "../../components/cards/stat_card.slint";
-// import { Size } from "./data.slint";
+import { PluginCard } from "../../components/cards/plugin_card.slint";
+import {
+    QuickAction,
+    RecentActivity,
+    DashboardAdapter,
+} from "./dashboard_data.slint";
 import {
     HorizontalBox,
     ScrollView,
@@ -17,7 +20,6 @@ import {
 import {
     MyEmptyActivityComponent,
 } from "../../components/empty_activity.slint";
-import { PluginCard } from "../../components/cards/plugin_card.slint";
 
 
 //===============================
@@ -33,7 +35,7 @@ component QuickActionComp inherits Rectangle {
         border-width: 1px;
         x: ta.has-hover ? 4px : 0px;
         border-radius: Theme.radius_md;
-        drop-shadow-color: Theme.shadow_glow.darker(0.9);
+        drop-shadow-color: Theme.shadow_glow; //.darker(0.9);
         drop-shadow-blur: i == 0 ? ta.has-hover ? 20px : 0px : 0px;
         border-color: i == 0 ? Theme.accent.with-alpha(ta.has-hover ? 0.4 : 0.2) : ta.has-hover ? Theme.border_secondary : Theme.border_primary;
         background: i == 0 ? @linear-gradient(135deg, Theme.accent.with-alpha(0.15), Theme.accent.with-alpha(0.05)) : ta.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
@@ -209,12 +211,14 @@ component RecentActivityComp inherits VerticalLayout {
 }
 
 export component DashboardPage inherits Flickable {
-    // out property <Size> size;
-
     horizontal-stretch: 1;
     min-width: layout.min-width + 40px;
 
-    // size: { width: c.width, height: c.height };
+    // property <int> value: 2;
+    property <int> plugin_per_row: 4;
+    property <length> prev_card_width: 0px;
+    property <length> current_card_width: 1px;
+    property <{ max: length,min: length}> plugin-min-max-width: { min: 200px, max: 250px };
 
     TouchArea {
         clicked => {
@@ -223,7 +227,7 @@ export component DashboardPage inherits Flickable {
         }
     }
 
-    VerticalLayout {
+    layout := VerticalLayout {
         padding: 20px;
         spacing: 15px;
         horizontal-stretch: 1;
@@ -231,7 +235,7 @@ export component DashboardPage inherits Flickable {
         //===============================
         // Stat Cards Section
         //===============================
-        layout := HorizontalLayout {
+        HorizontalLayout {
             spacing: 15px;
 
             for data in DashboardAdapter.stats: StatCard {
@@ -284,25 +288,36 @@ export component DashboardPage inherits Flickable {
         //===============================
         // Active Plugins Section
         //===============================
-
         c := Card {
             hasMore: true;
             title: "Available Cleaners";
             source: Icons.AvailableCleaners;
-
-            // changed width => {
-            //     debug(c.width);
-            // }
-
             GridBox {
-                // padding: c.width > 0 ? 0px : 15px;
-
                 for data[i] in 20: PluginCard {
-                    row: Math.floor(i / 6);
-                    max-width: 250px;
+                    row: Math.floor(i / plugin_per_row);
+                    // max-width: plugin-min-max-width.max;
+                    // min-width: plugin-min-max-width.min;
                     data: DashboardAdapter.quick_action[0];
                 }
             }
+        }
+    }
+
+    //===============================
+    // Fragile Do Not Touch Any How
+    //===============================
+    timer := Timer {
+        interval: 0.1ms;
+        running: root.prev_card_width != root.current_card_width; // || root.prev_card_width != layout.width;
+        triggered => {
+            // value -= 1;
+            // if(value == 1){
+                prev_card_width = layout.width;
+            current_card_width = layout.width;
+            // }
+
+            debug(current_card_width);
+            // debug("xx \{last_card_width}");
         }
     }
 }
