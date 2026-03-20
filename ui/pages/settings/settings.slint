@@ -2,13 +2,14 @@ import { Theme } from "../../theme/theme.slint";
 import { SettingsData } from "settings_data.slint";
 import { Icons } from "../../services/icons.slint";
 import { Card } from "../../components/cards/card.slint";
-import { TextField } from "../../components/text_field.slint";
 import { GridBox, TextEdit, ComboBox } from "std-widgets.slint";
 import { ToggleSwitch } from "../../components/toggle_switch.slint";
+import { TextField } from "../../components/inputs/text_field.slint";
 import { IconButton } from "../../components/buttons/icon_button.slint";
 import {
     HorizontalDivider,
 } from "../../components/divider/horizontal_divider.slint";
+import { TextArea } from "../../components/inputs/text_area.slint";
 
 //=================================
 //
@@ -173,35 +174,8 @@ export component SettingsPage inherits GridBox {
                 title: "Exclude Paths";
                 label: "Directories to always skip during scans";
 
-                Rectangle {
-                    clip: true;
-                    width: 200px;
-                    height: 100px;
-                    border-width: 1px;
-                    background: Theme.bg_input;
-                    border-radius: Theme.radius_md;
-                    drop-shadow-color: Theme.shadow_glow; // accent_glow;
-                    drop-shadow-blur: input.has-focus ? 5px : 0px;
-                    border-color: input.has-focus ? Theme.accent : Theme.border_secondary;
-
-                    VerticalLayout {
-                        padding: 10px;
-
-                        input := TextInput {
-                            single-line: false;
-                            height: parent.height - 10px;
-                            // accepted => input.clear-focus();
-
-                            // Placeholder Logic
-                            if (self.text == ""): Text {
-                                x: 0px;
-                                y: 0px;
-                                // text: root.placeholder;
-                                color: Theme.text_tertiary;
-                                text: "/usr \n/System \n/Library";
-                            }
-                        }
-                    }
+                TextArea {
+                    placeholder: "/usr \n/System \n/Library";
                 }
             }
         }
@@ -307,7 +281,6 @@ export component SettingsPage inherits GridBox {
                 padding-top: 10px;
 
                 Text {
-                    // max-width: 400px;
                     font-size: 0.88rem;
                     wrap: TextWrap.word-wrap;
                     color: Theme.text_secondary;
@@ -323,7 +296,6 @@ export component SettingsPage inherits GridBox {
                 padding-bottom: 15px;
 
                 for data[i] in SettingsData.project_links: Rectangle {
-                    // height: 40px;
                     border-width: 1px;
                     background: Theme.bg_tertiary;
                     border-radius: self.height * Theme.radius_full;
@@ -350,12 +322,17 @@ export component SettingsPage inherits GridBox {
                             }
                         }
 
-                        Text {
-                            text: data.label;
-                            font-weight: 500;
-                            font-size: 0.82rem;
-                            vertical-alignment: center;
-                            color: ta.has-hover ? Theme.accent : Theme.text_tertiary;
+                        Rectangle {
+                            width: id.width;
+
+                            id := Text {
+                                y: 1.5px;
+                                text: data.label;
+                                font-weight: 500;
+                                font-size: 0.82rem;
+                                vertical-alignment: center;
+                                color: ta.has-hover ? Theme.accent : Theme.text_tertiary;
+                            }
                         }
                     }
                 }
@@ -365,7 +342,7 @@ export component SettingsPage inherits GridBox {
                 font-size: 0.78rem;
                 color: Theme.text_tertiary;
                 horizontal-alignment: center;
-                text: "Made with (Love) for developers everywhere";
+                text: "Made with ❤️ for developers everywhere";
             }
         }
     }

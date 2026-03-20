@@ -10,24 +10,32 @@ component CardHeader inherits HorizontalLayout {
 
     callback moreClicked();
 
-    spacing: 4px;
     padding: 15px;
     vertical-stretch: 0;
+    alignment: space-between;
 
-    Image {
-        width: 17px;
-        source: source;
-        height: self.width;
-        colorize: Theme.accent;
-    }
+    HorizontalLayout {
+        spacing: 4px;
 
-    Text {
-        text: title;
-        font-size: 1rem;
-        font-weight: 600;
-        horizontal-stretch: 1;
-        color: Theme.text_primary;
-        vertical-alignment: center;
+        Image {
+            width: 17px;
+            source: source;
+            height: self.width;
+            colorize: Theme.accent;
+        }
+
+        Rectangle {
+            width: txt.width;
+
+            txt := Text {
+                y: 4px;
+                text: title;
+                font-size: 1rem;
+                font-weight: 600;
+                color: Theme.text_primary;
+                vertical-alignment: center;
+            }
+        }
     }
 
     if hasMore:   Rectangle {
@@ -62,8 +70,8 @@ component CardHeader inherits HorizontalLayout {
 }
 
 export component Card inherits Rectangle {
-    in property <string> title;
     in property <image> source;
+    in property <string> title;
     in-out property <bool> hasMore: false;
 
     callback moreClicked();

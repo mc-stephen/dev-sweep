@@ -56,7 +56,7 @@ export component StatCard inherits Rectangle {
 
             Rectangle {
                 border-radius: self.height * Theme.radius_full;
-                background: data.is_grey ? Theme.bg_tertiary : Theme.success_bg;
+                background: data.is_grey ? Theme.bg_tertiary : Theme.success.transparentize(0.93); // Theme.success_bg;
 
                 HorizontalLayout {
                     spacing: 2px;

@@ -1,0 +1,31 @@
+import { Theme } from "../../theme/theme.slint";
+export component TextArea inherits Rectangle {
+    in property <string> placeholder;
+
+    clip: true;
+    width: 200px;
+    height: 100px;
+    border-width: 1px;
+    background: Theme.bg_input;
+    border-radius: Theme.radius_md;
+    drop-shadow-color: Theme.shadow_glow;
+    drop-shadow-blur: input.has-focus ? 5px : 0px;
+    border-color: input.has-focus ? Theme.accent : Theme.border_secondary;
+
+    VerticalLayout {
+        padding: 10px;
+
+        input := TextInput {
+            single-line: false;
+            height: parent.height - 10px;
+                            
+            // Placeholder Logic
+            if (self.text == ""): Text {
+                x: 0px;
+                y: 0px;
+                text: root.placeholder;
+                color: Theme.text_tertiary;
+            }
+        }
+    }
+}
