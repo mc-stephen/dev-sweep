@@ -3,13 +3,13 @@ import { SettingsData } from "settings_data.slint";
 import { Icons } from "../../services/icons.slint";
 import { Card } from "../../components/cards/card.slint";
 import { GridBox, TextEdit, ComboBox } from "std-widgets.slint";
+import { TextArea } from "../../components/inputs/text_area.slint";
 import { ToggleSwitch } from "../../components/toggle_switch.slint";
 import { TextField } from "../../components/inputs/text_field.slint";
 import { IconButton } from "../../components/buttons/icon_button.slint";
 import {
     HorizontalDivider,
 } from "../../components/divider/horizontal_divider.slint";
-import { TextArea } from "../../components/inputs/text_area.slint";
 
 //=================================
 //
@@ -18,7 +18,7 @@ component Rect inherits HorizontalLayout {
     in property <string> title;
     in property <string> label;
 
-    spacing: 20px;
+    spacing: 50px;
     padding-top: 10px;
     padding-bottom: 10px;
     alignment: space-between;
@@ -45,13 +45,10 @@ component Rect inherits HorizontalLayout {
 
 export component SettingsPage inherits GridBox {
 
-    // property <length> card_width: 33.3%;
-
     //****************************************/
     Card {
-        // width: 32%;
         title: "Appearance";
-        source: Icons.addCleaner;
+        source: Icons.palette;
 
         VerticalLayout {
             alignment: start;
@@ -119,9 +116,8 @@ export component SettingsPage inherits GridBox {
 
     //****************************************/
     Card {
-        // width: 32%;
         title: "Safety";
-        source: Icons.addCleaner;
+        source: Icons.shield;
 
         VerticalLayout {
             alignment: start;
@@ -175,6 +171,7 @@ export component SettingsPage inherits GridBox {
                 label: "Directories to always skip during scans";
 
                 TextArea {
+                    width: 200px;
                     placeholder: "/usr \n/System \n/Library";
                 }
             }
@@ -183,9 +180,8 @@ export component SettingsPage inherits GridBox {
 
     //****************************************/
     Card {
-        // width: 32%;
         row: 1;
-        source: Icons.addCleaner;
+        source: Icons.folder;
         title: "Cleaners Directory";
 
         VerticalLayout {
@@ -211,10 +207,10 @@ export component SettingsPage inherits GridBox {
                     IconButton {
                         height: 30px;
                         width: self.height;
+                        icon: Icons.folder;
                         border_hover: Theme.accent;
                         icon_size: self.width - 15px;
                         colorize_hover: Theme.accent;
-                        icon: Icons.AvailableCleaners;
                         border-radius: Theme.radius_sm;
                         clicked => {
                             //
@@ -242,9 +238,8 @@ export component SettingsPage inherits GridBox {
     //****************************************/
     Card {
         row: 1;
-        // width: 32%;
-        source: Icons.addCleaner;
-        title: "Cleaners Directory";
+        source: Icons.info;
+        title: "About DevSweep";
 
         VerticalLayout {
             spacing: 2px;
@@ -309,15 +304,15 @@ export component SettingsPage inherits GridBox {
                     }
 
                     HorizontalLayout {
-                        spacing: 5px;
+                        spacing: 3px;
                         padding: 8px;
 
                         VerticalLayout {
                             alignment: center;
 
                             Image {
-                                width: 10px;
-                                source: Icons.dashboard;
+                                width: 12px;
+                                source: data.icon;
                                 colorize: ta.has-hover ? Theme.accent : Theme.text_tertiary;
                             }
                         }
@@ -326,7 +321,7 @@ export component SettingsPage inherits GridBox {
                             width: id.width;
 
                             id := Text {
-                                y: 1.5px;
+                                y: 1.9px;
                                 text: data.label;
                                 font-weight: 500;
                                 font-size: 0.82rem;

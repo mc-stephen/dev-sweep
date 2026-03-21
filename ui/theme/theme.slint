@@ -4,13 +4,14 @@ export global Theme {
     // in-out property <color> accent_light: #A29BFE;
     in-out property <color> accent_light: accent.brighter(0.3);
     // in-out property <color> accent_dark: #5641CC;
-    in-out property <color> accent_dark: accent.with-alpha(0.1);
+    in-out property <color> accent_dark: accent.with-alpha(0.3);
     // in-out property <color> accent_glow: #6c5ce74d; // rgba(108, 92, 231, 0.3);
 
     // Status colors
     in-out property <color> success: #00B894;
-    // in-out property <color> success_bg: rgba(0, 184, 148, 0.12);
+    in-out property <color> success_bg: success.with-alpha(0.12); // rgba(0, 184, 148, 0.12);
     in-out property <color> warning: #FDCB6E;
+    in-out property <color> warning_bg: warning.with-alpha(0.12);
     // in-out property <color> warning_bg: rgba(253, 203, 110, 0.12);
     in-out property <color> danger: #E17055;
     // in-out property <color> danger_bg: rgba(225, 112, 85, 0.12);

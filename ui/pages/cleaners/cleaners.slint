@@ -1,0 +1,508 @@
+import { Theme } from "../../theme/theme.slint";
+import { Icons } from "../../services/icons.slint";
+import { Card } from "../../components/cards/card.slint";
+import { TextArea } from "../../components/inputs/text_area.slint";
+import { TextButton } from "../../components/buttons/text_button.slint";
+import { IconButton } from "../../components/buttons/icon_button.slint";
+import { CleanersData, PathType, RiskLevel } from "cleaners_data.slint";
+import {
+    TextIconButton,
+} from "../../components/buttons/text_icon_button.slint";
+import {
+    HorizontalDivider,
+} from "../../components/divider/horizontal_divider.slint";
+
+
+//===============================
+// 
+//===============================
+component Modal inherits Rectangle {
+    background: Theme.bg_overlay;
+
+    VerticalLayout {
+        alignment: center;
+
+        HorizontalLayout {
+            alignment: center;
+
+            Card {
+                min-width: 400px;
+                source: Icons.code;
+                title: "Cleaner Config Editor";
+
+                VerticalLayout {
+                    padding: 15px;
+                    spacing: 12px;
+
+                    TextArea {
+                        height: 200px;
+                        background: Theme.bg_primary;
+                        placeholder: "Add cleaner config text here, e.g {...}";
+                    }
+
+                    VerticalLayout {
+                        spacing: 5px;
+                        alignment: start;
+
+                        Text {
+                            font-weight: 600;
+                            font-size: 0.85rem;
+                            text: "Config Schema";
+                            color: Theme.text_secondary;
+                        }
+
+                        for schema[i] in CleanersData.schema_demo: HorizontalLayout {
+                            spacing: 3px;
+                            alignment: start;
+
+                            Rectangle {
+                                border-width: 1px;
+                                border-radius: 3px;
+                                background: Theme.bg_tertiary;
+                                border-color: Theme.border_primary;
+                                HorizontalLayout {
+                                    padding: 2px;
+                                    alignment: start;
+                                    padding-left: 5px;
+                                    padding-right: 5px;
+                                    Rectangle {
+                                        width: schema_key.width;
+                                        height: schema_key.height;
+                                        schema_key := Text {
+                                            y: 0.8px;
+                                            text: schema.key;
+                                            font-size: 0.78rem;
+                                            color: Theme.accent;
+                                        }
+                                    }
+                                }
+                            }
+
+                            Text {
+                                y: 1px;
+                                font-size: 0.82rem;
+                                text: "-- \{schema.desc}";
+                                color: Theme.text_tertiary;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                }
+
+                HorizontalDivider { }
+
+                HorizontalLayout {
+                    spacing: 10px;
+                    padding: 15px;
+                    alignment: end;
+
+                    TextButton {
+                        text: "Cancel";
+                        border-width: 1px;
+                        background: transparent;
+                        text_color: self.has-hover ? Theme.accent : Theme.text_secondary;
+                        border-color: self.has-hover ? Theme.accent : Theme.border_secondary;
+                        clicked => {
+                            CleanersData.show_model = false;
+                        }
+                    }
+
+                    TextIconButton {
+                        text: "Save Cleaner";
+                        source: Icons.addCleaner;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//===============================
+// Top Section
+//===============================
+component TopComponent inherits HorizontalLayout {
+    spacing: 15px;
+    alignment: space-between;
+
+    VerticalLayout {
+        spacing: 10px;
+
+        Text {
+            font-weight: 600;
+            font-size: 1.15rem;
+            text: "Cleaner Plugins";
+        }
+
+        VerticalLayout {
+            spacing: 2px;
+
+            Text {
+                font-size: 0.88rem;
+                color: Theme.text_secondary;
+                text: "Each cleaner is a JSON config that tells DevSweep how to detect and clean a specific project type.";
+            }
+
+            HorizontalLayout {
+                spacing: 4px;
+                alignment: start;
+
+                Text {
+                    font-size: 0.88rem;
+                    vertical-alignment: center;
+                    color: Theme.text_secondary;
+                    text: "Add your own by dropping a";
+                }
+
+                Rectangle {
+                    border-radius: 4px;
+                    background: Theme.bg_tertiary;
+
+                    HorizontalLayout {
+                        padding-top: 2px;
+                        padding-left: 4px;
+                        padding-right: 4px;
+                        padding-bottom: 2px;
+
+                        Text {
+                            text: ".json";
+                            font-size: 0.88rem;
+                            color: Theme.accent_light;
+                        }
+                    }
+                }
+
+                Text {
+                    font-size: 0.88rem;
+                    text: "file into the";
+                    vertical-alignment: center;
+                    color: Theme.text_secondary;
+                }
+
+                Rectangle {
+                    border-radius: 4px;
+                    background: Theme.bg_tertiary;
+
+                    HorizontalLayout {
+                        padding-top: 2px;
+                        padding-left: 4px;
+                        padding-right: 4px;
+                        padding-bottom: 2px;
+
+                        Text {
+                            text: "cleaners/";
+                            font-size: 0.88rem;
+                            color: Theme.accent_light;
+                        }
+                    }
+                }
+
+                Text {
+                    text: "directory.";
+                    font-size: 0.88rem;
+                    vertical-alignment: center;
+                    color: Theme.text_secondary;
+                }
+            }
+        }
+    }
+
+    VerticalLayout {
+        alignment: center;
+
+        TextIconButton {
+            source: Icons.plus;
+            vertical-stretch: 0;
+            text: "Create Cleaner";
+            background: @linear-gradient(135deg, Theme.accent, Theme.accent_dark);
+            clicked => {
+                CleanersData.show_model = true
+            };
+        }
+    }
+}
+
+//===============================
+// Body Section
+//===============================
+component BodyComponent inherits GridLayout {
+    spacing: 10px;
+    horizontal-stretch: 1;
+
+    for cleaner[i] in CleanersData.cleaners: Rectangle {
+        // max-width: 1000px;
+        clip: true;
+        border-width: 1px;
+        row: Math.floor(i / 3);
+        background: Theme.bg_card;
+        border-radius: Theme.radius_lg;
+        // y: ta.has-hover ? -3px : 0px;
+        border-color: cleaner_touch_event.has-hover ? Theme.accent_dark : edit_btn.has_hover ? Theme.accent_dark : Theme.border_primary;
+
+        cleaner_touch_event := TouchArea { }
+
+        //
+        edit_btn := IconButton {
+            colorize: white;
+            icon_size: 15px;
+            icon: Icons.edit;
+            border-color: Theme.accent;
+            background: Theme.accent_dark;
+            border-radius: Theme.radius_sm;
+            opacity: self.has_hover ? 1 : 0.7;
+            x: parent.width - (self.has_hover ? self.width - 5px : self.width - 10px);
+            y: parent.height - (self.has_hover ? self.height - 5px : self.width - 10px);
+            icon_x_y: {
+                x: self.width / 2 - (self.has_hover ? edit_btn.icon_size / 1.5 : 12px),
+                y: self.height / 2 - (self.has_hover ? edit_btn.icon_size / 1.5 : 12px)
+            };
+            clicked => {
+                //
+            }
+
+            animate x, y {
+                duration: 0.1s;
+                easing: Easing.ease-in-out;
+            }
+        }
+
+        //
+        VerticalLayout {
+            alignment: start;
+
+            /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+            HorizontalLayout {
+                spacing: 10px;
+                padding: 10px;
+                alignment: start;
+
+                Rectangle {
+                    width: 48px;
+                    height: self.width;
+                    border-radius: Theme.radius_md;
+                    background: Theme.bg_card_hover;
+
+                    Image {
+                        source: cleaner.icon;
+                        colorize: cleaner.color;
+                        width: parent.width * 0.6;
+                    }
+                }
+
+                VerticalLayout {
+                    spacing: 3px;
+                    alignment: center;
+
+                    Text {
+                        font-weight: 600;
+                        text: cleaner.name;
+                        font-size: 1.05rem;
+                    }
+
+                    Text {
+                        wrap: word-wrap;
+                        max-width: 200px;
+                        font-size: 0.78rem;
+                        text: cleaner.description;
+                        color: Theme.text_tertiary;
+                    }
+                }
+            }
+
+            HorizontalDivider { }
+
+            VerticalLayout {
+                padding: 12px;
+                alignment: start;
+
+                /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+                Text {
+                    font-size: 0.78rem;
+                    color: Theme.text_tertiary;
+                    text: "Detection".to_uppercase();
+                }
+
+                HorizontalLayout {
+                    alignment: start;
+                    padding-top: 5px;
+                    padding-bottom: 10px;
+
+                    GridLayout {
+                        spacing: 5px;
+
+                        for detect[i] in cleaner.detect: Rectangle {
+                            property <length> file_type_length: 0;
+
+                            clip: true;
+                            height: 25px;
+                            border-width: 1px;
+                            row: Math.floor(i / 3);
+                            background: Theme.bg_tertiary;
+                            border-color: Theme.border_primary;
+                            border-radius: self.height * Theme.radius_full;
+                            width: 12px + file_type_length + 8px + 8px + 3px;
+
+                            HorizontalLayout {
+                                spacing: 3px;
+                                padding-left: 8px;
+                                padding-right: 8px;
+
+                                Image {
+                                    width: 12px;
+                                    colorize: Theme.text_secondary;
+                                    source: detect.type == PathType.File ? Icons.file : Icons.folder;
+                                }
+
+                                file_type := Text {
+                                    text: detect.name;
+                                    font-size: 0.75rem;
+                                    vertical-alignment: center;
+                                    color: Theme.text_secondary;
+
+                                    init => {
+                                        // length = file_type.width / 1px;
+                                        file_type_length = file_type.width;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+                Text {
+                    font-size: 0.78rem;
+                    color: Theme.text_tertiary;
+                    text: "Clean target".to_uppercase();
+                }
+
+                VerticalLayout {
+                    spacing: 3px;
+                    padding-top: 5px;
+                    padding-bottom: 10px;
+
+                    for target[i] in cleaner.targets: HorizontalLayout {
+                        spacing: 3px;
+
+                        Image {
+                            width: 12px;
+                            source: Icons.folder;
+                            colorize: Theme.accent;
+                        }
+
+                        Text {
+                            y: 2px;
+                            font-size: 0.8rem;
+                            text: target.name;
+                            horizontal-stretch: 1;
+                            color: Theme.text_secondary;
+                        }
+
+                        Rectangle {
+                            height: 14px;
+                            horizontal-stretch: 0;
+                            border-radius: Theme.radius_sm;
+                            background: target.riskLevel == RiskLevel.Safe ? Theme.success_bg : Theme.warning_bg;
+
+                            HorizontalLayout {
+                                padding-left: 3px;
+                                padding-right: 3px;
+
+                                Text {
+                                    y: 1px;
+                                    font-size: 0.68rem;
+                                    vertical-alignment: center;
+                                    text: target.riskLevel == RiskLevel.Safe ? "Safe" : "Caution";
+                                    color: target.riskLevel == RiskLevel.Safe ? Theme.success : Theme.warning;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+                Text {
+                    font-size: 0.78rem;
+                    color: Theme.text_tertiary;
+                    text: "Restore command".to_uppercase();
+                }
+
+                VerticalLayout {
+                    padding-top: 5px;
+                    padding-bottom: 10px;
+
+                    Rectangle {
+                        border-width: 1px;
+                        background: Theme.bg_primary;
+                        border-radius: Theme.radius_sm;
+                        border-color: Theme.border_primary;
+                        HorizontalLayout {
+                            padding-top: 8px;
+                            padding-left: 12px;
+                            padding-right: 12px;
+                            padding-bottom: 8px;
+                            Text {
+                                font-size: 0.8rem;
+                                color: Theme.success;
+                                letter-spacing: 0.5px;
+                                text: cleaner.restore-command;
+                            }
+                        }
+                    }
+                }
+
+                /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+                Text {
+                    font-size: 0.78rem;
+                    color: Theme.text_tertiary;
+                    text: "Estimated savings".to_uppercase();
+                }
+
+                VerticalLayout {
+                    padding-top: 5px;
+
+                    Text {
+                        font-weight: 600;
+                        font-size: 0.85rem;
+                        color: Theme.warning;
+                        text: cleaner.estimated-savings;
+                    }
+                }
+            }
+        }
+    }
+}
+
+export component CleanersPage inherits Rectangle {
+    in property <length> win_height;
+
+    init => {
+        root.height = win_height - Theme.topbar_height;
+    }
+
+    changed win_height => {
+        root.height = win_height - Theme.topbar_height;
+    }
+
+    Flickable {
+        min-width: vl.min-width;
+
+        vl := VerticalLayout {
+            padding: 15px;
+            spacing: 15px;
+            alignment: start;
+
+            TopComponent { }
+
+            HorizontalLayout {
+                alignment: start;
+
+                BodyComponent { }
+            }
+        }
+    }
+
+    popup := Modal {
+        visible: CleanersData.show_model;
+    }
+}

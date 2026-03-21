@@ -1,7 +1,7 @@
 import { Theme } from "./theme/theme.slint";
 import { Icons } from "./services/icons.slint";
 import { NavItem } from "components/nav_item.slint";
-import { CleanersPage } from "pages/cleaners.slint";
+import { CleanersPage } from "pages/cleaners/cleaners.slint";
 import { SettingsPage } from "pages/settings/settings.slint";
 import { ScanAndCleanPage } from "pages/scan_and_clean.slint";
 import { ToggleSwitch } from "components/toggle_switch.slint";
@@ -293,7 +293,9 @@ export component AppWindow inherits Window {
                 // Where the body (pages) will be rendered
                 if root.active-page == 0: DashboardPage { }
                 if root.active-page == 1: ScanAndCleanPage { }
-                if root.active-page == 2: CleanersPage { }
+                if root.active-page == 2: CleanersPage {
+                    win_height: root.height;
+                }
                 if root.active-page == 3: ActivityLogPage { }
                 if root.active-page == 4: SettingsPage { }
             }

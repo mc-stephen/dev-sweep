@@ -4,14 +4,18 @@ export component IconButton inherits Rectangle {
     in property <length> size: 35px;
     in property <length> icon_size: 20px;
 
+    out property <bool> has_hover: ta.has-hover;
+    
     in property <brush> border: Theme.border_primary;
     in property <brush> border_hover: Theme.border_secondary;
-
+    
     in property <brush> bg: Theme.bg_input;
     in property <brush> bg_hover: Theme.bg_tertiary;
-
+    
     in property <brush> colorize: Theme.text_secondary;
     in property <brush> colorize_hover: Theme.text_primary;
+
+    in property <{x:length,y:length}> icon_x_y: { x: (self.width / 2) - (icon_size / 2), y: (self.height / 2) - (icon_size / 2) };
 
     callback clicked;
 
@@ -28,6 +32,8 @@ export component IconButton inherits Rectangle {
     }
 
     Image {
+        x: icon_x_y.x;
+        y: icon_x_y.y;
         source: root.icon;
         width: root.icon_size;
         height: root.icon_size;
