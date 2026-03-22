@@ -106,7 +106,7 @@ import {
                 { text: "Dashboard", icon: Icons.dashboard },
                 { text: "Scan & Clean", icon: Icons.search },
                 { text: "Cleaners", icon: Icons.puzzle },
-                { text: "Activity Log", icon: Icons.terminal },
+                { text: "Activity", icon: Icons.terminal },
                 { text: "Settings", icon: Icons.settings }
             ]: NavItem {
                 height: 37px;
@@ -287,7 +287,7 @@ export component AppWindow inherits Window {
 
                 BodyHeader {
                     start_drag => root.start_system_move();
-                    title: root.active-page == 0 ? "Dashboard" : root.active-page == 1 ? "Scan & Clean" : root.active-page == 2 ? "Cleaners" : root.active-page == 3 ? "Activity Log" : "Settings";
+                    title: root.active-page == 0 ? "Dashboard" : root.active-page == 1 ? "Scan & Clean" : root.active-page == 2 ? "Cleaners" : root.active-page == 3 ? "Activity" : "Settings";
                 }
 
                 // Where the body (pages) will be rendered

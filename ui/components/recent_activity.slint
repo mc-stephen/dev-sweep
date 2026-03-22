@@ -1,0 +1,99 @@
+import { Theme } from "../theme/theme.slint";
+import { Icons } from "../services/icons.slint";
+import { ActivityStruct } from "../global/recent_activity.slint";
+import { HorizontalDivider } from "divider/horizontal_divider.slint";
+
+export component RecentActivity inherits VerticalLayout {
+    in property <int> i;
+    in property <int> length;
+    in property <ActivityStruct> data;
+
+    padding-left: 15px;
+    padding-right: 15px;
+    // horizontal-stretch: 1;
+
+    Rectangle {
+        height: 50px;
+        // background: ((i+1) % 2 == 0) ? red : green;
+
+        HorizontalLayout {
+            spacing: 10px;
+            horizontal-stretch: 1;
+            // padding-left: 10px;
+            // padding-right: 10px;
+
+            VerticalLayout {
+                width: 28px;
+                alignment: center;
+
+                Rectangle {
+                    clip: true;
+                    width: 28px;
+                    height: self.width;
+                    border-radius: Theme.radius_sm;
+                    background: Theme.accent.with-alpha(0.1);
+
+                    Image {
+                        colorize: Theme.accent;
+                        width: parent.width - 14px;
+                        source: Icons.activeCleaner;
+                    }
+                }
+            }
+
+            VerticalLayout {
+                spacing: 2px;
+                alignment: center;
+                horizontal-stretch: 1;
+
+                Text {
+                    font-weight: 600;
+                    font-size: 0.85rem;
+                    text: "Cleaning Complete";
+                }
+
+                Text {
+                    font-size: 0.77rem;
+                    color: Theme.text_tertiary;
+                    text: "8 projects cleaned · 4.2 GB recovered";
+                }
+            }
+
+            VerticalLayout {
+                spacing: 4px;
+                alignment: center;
+
+                Text {
+                    text: "2d ago";
+                    font-size: 0.72rem;
+                    color: Theme.text_tertiary;
+                    horizontal-alignment: right;
+                }
+
+                Rectangle {
+                    background: Theme.accent.with-alpha(0.1);
+                    border-radius: 100px * Theme.radius_full;
+
+                    VerticalLayout {
+                        padding-top: 4px;
+                        alignment: center;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        padding-bottom: 2px;
+
+                        Text {
+                            text: "CLEAN";
+                            font-weight: 600;
+                            font-size: 0.62rem;
+                            color: Theme.accent;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if i != (length - 1): HorizontalDivider {
+        background: Theme.border_primary.with-alpha(0.03);
+    }
+}

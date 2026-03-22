@@ -1,11 +1,10 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
-import { Card } from "../../components/cards/card.slint";
 import { StatCard } from "../../components/cards/stat_card.slint";
+import { Card, CardHeader } from "../../components/cards/card.slint";
 import { PluginCard } from "../../components/cards/plugin_card.slint";
 import {
     QuickAction,
-    RecentActivity,
     DashboardAdapter,
 } from "./dashboard_data.slint";
 import {
@@ -20,7 +19,43 @@ import {
 import {
     MyEmptyActivityComponent,
 } from "../../components/empty_activity.slint";
+import { RecentActivity } from "../../components/recent_activity.slint";
+import { GlobalRecentActivity } from "../../global/recent_activity.slint";
 
+
+//===============================
+//
+//===============================
+component ViewMore inherits Rectangle {
+    callback moreClicked();
+
+    ta := TouchArea {
+        mouse-cursor: pointer;
+        clicked => moreClicked();
+    }
+
+    HorizontalLayout {
+        spacing: 3px;
+
+        Text {
+            text: "View All";
+            font-size: 0.82rem;
+            vertical-alignment: center;
+            color: ta.has-hover ? Theme.accent : Theme.accent_light;
+        }
+
+        VerticalLayout {
+            y: -1.5px;
+            alignment: center;
+
+            Image {
+                width: 10px;
+                source: Icons.arrowRight;
+                colorize: ta.has-hover ? Theme.accent : Theme.accent_light;
+            }
+        }
+    }
+}
 
 //===============================
 //
@@ -35,7 +70,7 @@ component QuickActionComp inherits Rectangle {
         border-width: 1px;
         x: ta.has-hover ? 4px : 0px;
         border-radius: Theme.radius_md;
-        drop-shadow-color: Theme.shadow_glow; //.darker(0.9);
+        drop-shadow-color: Theme.accent_dark.with-alpha(0.2); //.darker(0.9);
         drop-shadow-blur: i == 0 ? ta.has-hover ? 20px : 0px : 0px;
         border-color: i == 0 ? Theme.accent.with-alpha(ta.has-hover ? 0.4 : 0.2) : ta.has-hover ? Theme.border_secondary : Theme.border_primary;
         background: i == 0 ? @linear-gradient(135deg, Theme.accent.with-alpha(0.15), Theme.accent.with-alpha(0.05)) : ta.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
@@ -93,7 +128,7 @@ component QuickActionComp inherits Rectangle {
                 Text {
                     font-size: 0.77rem;
                     text: data.sub_title;
-                    color: Theme.text_tertiary;
+                    color: i == 0 && ta.has-hover ? Theme.text_secondary : Theme.text_tertiary;
                 }
             }
 
@@ -109,104 +144,6 @@ component QuickActionComp inherits Rectangle {
                 }
             }
         }
-    }
-}
-
-//===============================
-//
-//===============================
-component RecentActivityComp inherits VerticalLayout {
-    in property <int> i;
-    in property <int> length;
-    in property <RecentActivity> data;
-
-    padding-left: 15px;
-    padding-right: 15px;
-    // horizontal-stretch: 1;
-
-    Rectangle {
-        height: 50px;
-        // background: ((i+1) % 2 == 0) ? red : green;
-
-        HorizontalLayout {
-            spacing: 10px;
-            horizontal-stretch: 1;
-            // padding-left: 10px;
-            // padding-right: 10px;
-
-            VerticalLayout {
-                width: 28px;
-                alignment: center;
-
-                Rectangle {
-                    clip: true;
-                    width: 28px;
-                    height: self.width;
-                    border-radius: Theme.radius_sm;
-                    background: Theme.accent.with-alpha(0.1);
-
-                    Image {
-                        colorize: Theme.accent;
-                        width: parent.width - 14px;
-                        source: Icons.activeCleaner;
-                    }
-                }
-            }
-
-            VerticalLayout {
-                spacing: 2px;
-                alignment: center;
-                horizontal-stretch: 1;
-
-                Text {
-                    font-weight: 600;
-                    font-size: 0.85rem;
-                    text: "Cleaning Complete";
-                }
-
-                Text {
-                    font-size: 0.77rem;
-                    color: Theme.text_tertiary;
-                    text: "8 projects cleaned · 4.2 GB recovered";
-                }
-            }
-
-            VerticalLayout {
-                spacing: 4px;
-                alignment: center;
-
-                Text {
-                    text: "2d ago";
-                    font-size: 0.72rem;
-                    color: Theme.text_tertiary;
-                    horizontal-alignment: right;
-                }
-
-                Rectangle {
-                    background: Theme.accent.with-alpha(0.1);
-                    border-radius: 100px * Theme.radius_full;
-
-                    VerticalLayout {
-                        padding-top: 4px;
-                        alignment: center;
-                        padding-left: 5px;
-                        padding-right: 5px;
-                        padding-bottom: 2px;
-
-                        Text {
-                            text: "CLEAN";
-                            font-weight: 600;
-                            font-size: 0.62rem;
-                            color: Theme.accent;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    if i != (length - 1): HorizontalDivider {
-        background: Theme.border_primary.with-alpha(0.03);
     }
 }
 
@@ -251,8 +188,15 @@ export component DashboardPage inherits Flickable {
 
             Card {
                 width: 50%;
-                title: "Quick Actions";
-                source: Icons.quickAction;
+
+                CardHeader {
+                    title: "Quick Actions";
+                    source: Icons.quickAction;
+                }
+
+                HorizontalDivider {
+                    background: Theme.border_primary;
+                }
 
                 VerticalLayout {
                     spacing: 6px;
@@ -267,19 +211,27 @@ export component DashboardPage inherits Flickable {
             }
 
             Card {
-                hasMore: true;
-                source: Icons.recent;
-                title: "Recent Activity";
 
-                if DashboardAdapter.recent_activity.length == 0: MyEmptyActivityComponent { }
+                CardHeader {
+                    source: Icons.recent;
+                    title: "Recent Activity";
 
-                if  DashboardAdapter.recent_activity.length != 0: ListView {
+                    ViewMore { }
+                }
+
+                HorizontalDivider {
+                    background: Theme.border_primary;
+                }
+
+                if GlobalRecentActivity.activity.length == 0: MyEmptyActivityComponent { }
+
+                if  GlobalRecentActivity.activity.length != 0: ListView {
                     vertical-stretch: 1;
 
-                    for data[i] in DashboardAdapter.recent_activity: RecentActivityComp {
+                    for data[i] in GlobalRecentActivity.activity: RecentActivity {
                         i: i;
                         data: data;
-                        length: DashboardAdapter.recent_activity.length;
+                        length: GlobalRecentActivity.activity.length;
                     }
                 }
             }
@@ -289,9 +241,18 @@ export component DashboardPage inherits Flickable {
         // Active Plugins Section
         //===============================
         c := Card {
-            hasMore: true;
-            title: "Available Cleaners";
-            source: Icons.AvailableCleaners;
+
+            CardHeader {
+                title: "Available Cleaners";
+                source: Icons.AvailableCleaners;
+
+                ViewMore { }
+            }
+
+            HorizontalDivider {
+                background: Theme.border_primary;
+            }
+
             GridBox {
                 for data[i] in 20: PluginCard {
                     row: Math.floor(i / plugin_per_row);
@@ -312,7 +273,7 @@ export component DashboardPage inherits Flickable {
         triggered => {
             // value -= 1;
             // if(value == 1){
-                prev_card_width = layout.width;
+            prev_card_width = layout.width;
             current_card_width = layout.width;
             // }
 

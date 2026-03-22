@@ -21,26 +21,7 @@ export struct QuickAction {
     sub_title: string,
 }
 
-export struct RecentActivity {
-    tag: string,
-    icon: image,
-    time: string,
-    title: string,
-    sub_title: string,
-}
-
 export global DashboardAdapter {
-    // in-out property <Size> size;
-
-    in-out property <[RecentActivity]> recent_activity: [
-        {
-            tag: "clean",
-            time: "2d ago",
-            icon: Icons.activeCleaner,
-            time: "Cleaning Complete",
-            sub_title: "8 projects cleaned · 4.2 GB recovered",
-        },
-    ];
 
     in-out property <[QuickAction]> quick_action: [
         {

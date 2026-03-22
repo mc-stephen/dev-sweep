@@ -1,7 +1,7 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
-import { Card } from "../../components/cards/card.slint";
 import { TextArea } from "../../components/inputs/text_area.slint";
+import { Card, CardHeader } from "../../components/cards/card.slint";
 import { TextButton } from "../../components/buttons/text_button.slint";
 import { IconButton } from "../../components/buttons/icon_button.slint";
 import { CleanersData, PathType, RiskLevel } from "cleaners_data.slint";
@@ -27,8 +27,15 @@ component Modal inherits Rectangle {
 
             Card {
                 min-width: 400px;
-                source: Icons.code;
-                title: "Cleaner Config Editor";
+
+                CardHeader {
+                    source: Icons.code;
+                    title: "Cleaner Config Editor";
+                }
+
+                HorizontalDivider {
+                    background: Theme.border_primary;
+                }
 
                 VerticalLayout {
                     padding: 15px;
@@ -110,13 +117,13 @@ component Modal inherits Rectangle {
                     TextIconButton {
                         text: "Save Cleaner";
                         source: Icons.addCleaner;
+                        background: Theme.accent_dark;
                     }
                 }
             }
         }
     }
 }
-
 
 //===============================
 // Top Section

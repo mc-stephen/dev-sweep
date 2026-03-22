@@ -1,7 +1,7 @@
 import { Theme } from "../../theme/theme.slint";
 import { SettingsData } from "settings_data.slint";
 import { Icons } from "../../services/icons.slint";
-import { Card } from "../../components/cards/card.slint";
+import { Card, CardHeader } from "../../components/cards/card.slint";
 import { GridBox, TextEdit, ComboBox } from "std-widgets.slint";
 import { TextArea } from "../../components/inputs/text_area.slint";
 import { ToggleSwitch } from "../../components/toggle_switch.slint";
@@ -47,8 +47,15 @@ export component SettingsPage inherits GridBox {
 
     //****************************************/
     Card {
-        title: "Appearance";
-        source: Icons.palette;
+
+        CardHeader {
+            title: "Appearance";
+            source: Icons.palette;
+        }
+
+        HorizontalDivider {
+            background: Theme.border_primary;
+        }
 
         VerticalLayout {
             alignment: start;
@@ -116,8 +123,15 @@ export component SettingsPage inherits GridBox {
 
     //****************************************/
     Card {
-        title: "Safety";
-        source: Icons.shield;
+
+        CardHeader {
+            title: "Safety";
+            source: Icons.shield;
+        }
+
+        HorizontalDivider {
+            background: Theme.border_primary;
+        }
 
         VerticalLayout {
             alignment: start;
@@ -181,8 +195,15 @@ export component SettingsPage inherits GridBox {
     //****************************************/
     Card {
         row: 1;
-        source: Icons.folder;
-        title: "Cleaners Directory";
+
+        CardHeader {
+            source: Icons.folder;
+            title: "Cleaners Directory";
+        }
+
+        HorizontalDivider {
+            background: Theme.border_primary;
+        }
 
         VerticalLayout {
             alignment: start;
@@ -238,8 +259,15 @@ export component SettingsPage inherits GridBox {
     //****************************************/
     Card {
         row: 1;
-        source: Icons.info;
-        title: "About DevSweep";
+
+        CardHeader {
+            source: Icons.info;
+            title: "About DevSweep";
+        }
+
+        HorizontalDivider {
+            background: Theme.border_primary;
+        }
 
         VerticalLayout {
             spacing: 2px;

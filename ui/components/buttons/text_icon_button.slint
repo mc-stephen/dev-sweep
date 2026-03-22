@@ -4,6 +4,9 @@ export component TextIconButton inherits Rectangle {
     in property <string> text;
     in property <image> source;
     in property <length> icon_size: 14px;
+    in property <color> icon_color: white;
+    in property <color> text_color: white;
+    in property <bool> has-hover: ta.has-hover;
     in property <length> horizontal-padding: 10px;
 
     callback clicked();
@@ -24,14 +27,15 @@ export component TextIconButton inherits Rectangle {
 
         Image {
             source: source;
-            colorize: white;
             width: icon_size;
+            colorize: icon_color;
         }
 
         Text {
             y: 1px;
             text: text;
-            font-weight: 600;
+            font-weight: 550;
+            color: text_color;
             font-size: 0.9rem;
             vertical-alignment: center;
         }

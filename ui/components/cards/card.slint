@@ -3,79 +3,46 @@ import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
 import { HorizontalDivider } from "../divider/horizontal_divider.slint";
 
-component CardHeader inherits HorizontalLayout {
+export component CardHeader inherits HorizontalLayout {
     in property <string> title;
     in property <image> source;
-    in property <bool> hasMore;
-
-    callback moreClicked();
 
     padding: 15px;
     vertical-stretch: 0;
     alignment: space-between;
 
-    HorizontalLayout {
-        spacing: 4px;
-
-        Image {
-            width: 17px;
-            source: source;
-            height: self.width;
-            colorize: Theme.accent;
-        }
-
-        Rectangle {
-            width: txt.width;
-
-            txt := Text {
-                y: 4px;
-                text: title;
-                font-size: 1rem;
-                font-weight: 600;
-                color: Theme.text_primary;
-                vertical-alignment: center;
-            }
-        }
-    }
-
-    if hasMore:   Rectangle {
-
-        ta := TouchArea {
-            mouse-cursor: pointer;
-            clicked => moreClicked();
-        }
+    VerticalLayout {
+        alignment: center;
 
         HorizontalLayout {
-            spacing: 3px;
-
-            Text {
-                text: "View All";
-                font-size: 0.82rem;
-                vertical-alignment: center;
-                color: ta.has-hover ? Theme.accent : Theme.accent_light;
+            spacing: 4px;
+    
+            Image {
+                width: 17px;
+                source: source;
+                height: self.width;
+                colorize: Theme.accent;
             }
-
-            VerticalLayout {
-                y: -1.5px;
-                alignment: center;
-
-                Image {
-                    width: 10px;
-                    source: Icons.arrowRight;
-                    colorize: ta.has-hover ? Theme.accent : Theme.accent_light;
+    
+            Rectangle {
+                width: txt.width;
+    
+                txt := Text {
+                    y: 4px;
+                    text: title;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: Theme.text_primary;
+                    vertical-alignment: center;
                 }
             }
         }
     }
+
+    @children
 }
 
 export component Card inherits Rectangle {
-    in property <image> source;
-    in property <string> title;
-    in-out property <bool> hasMore: false;
-
-    callback moreClicked();
-
     clip: true;
     border-width: 1px;
     background: Theme.bg_card;
@@ -83,17 +50,7 @@ export component Card inherits Rectangle {
     border-color: Theme.border_primary;
 
     VerticalLayout {
-
-        CardHeader {
-            title: title;
-            source: source;
-            hasMore: hasMore;
-            moreClicked => moreClicked();
-        }
-
-        HorizontalDivider {
-            background: Theme.border_primary;
-        }
+        vertical-stretch: 1;
 
         @children
     }
