@@ -1,10 +1,11 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
+import { CleanersData } from "cleaners_data.slint";
 import { TextArea } from "../../components/inputs/text_area.slint";
 import { Card, CardHeader } from "../../components/cards/card.slint";
 import { TextButton } from "../../components/buttons/text_button.slint";
 import { IconButton } from "../../components/buttons/icon_button.slint";
-import { CleanersData, PathType, RiskLevel } from "cleaners_data.slint";
+import { CleanerGlobal, PathType, RiskLevel } from "../../global/cleaner_global.slint";
 import {
     TextIconButton,
 } from "../../components/buttons/text_icon_button.slint";
@@ -236,7 +237,7 @@ component BodyComponent inherits GridLayout {
     spacing: 10px;
     horizontal-stretch: 1;
 
-    for cleaner[i] in CleanersData.cleaners: Rectangle {
+    for cleaner[i] in CleanerGlobal.cleaners: Rectangle {
         // max-width: 1000px;
         clip: true;
         border-width: 1px;

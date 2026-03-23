@@ -37,10 +37,8 @@ export component ToggleSwitch inherits Rectangle {
         width: root.width;
         height: root.height;
         clicked => {
-            if (root.enabled) {
-                root.checked = !root.checked;
-                root.toggled();
-            }
+            root.checked = !root.checked;
+            root.toggled();
         }
     }
 }

@@ -1,60 +1,27 @@
-// import { Theme } from "theme.slint";
-// export component LightTheme inherits Theme {
-//     accent: #6C5CE7;
-//     accent_light: #A29BFE;
-//     accent_dark: #5641CC;
-//     accent_glow: rgba(108, 92, 231, 0.3);
+export global LightTheme {
+    // Backgrounds
+    in-out property <color> bg_primary: #F5F6FA;
+    in-out property <color> bg_secondary: #FFFFFF;
+    in-out property <color> bg_tertiary: #EEF0F6;
+    in-out property <color> bg_card: #FFFFFF;
+    in-out property <color> bg_card_hover: #F8F9FC;
+    in-out property <color> bg_elevated: #FFFFFF;
+    in-out property <color> bg_input: #F0F2F7;
+    in-out property <color> bg_sidebar: #FFFFFF;
+    in-out property <color> bg_overlay: rgba(0, 0, 0, 0.3);
 
-//     success: #00B894;
-//     success_bg: rgba(0, 184, 148, 0.12);
-//     warning: #FDCB6E;
-//     warning_bg: rgba(253, 203, 110, 0.12);
-//     danger: #E17055;
-//     danger_bg: rgba(225, 112, 85, 0.12);
-//     info: #74B9FF;
-//     info_bg: rgba(116, 185, 255, 0.12);
+    // Borders
+    in-out property <color> border_primary: rgba(0, 0, 0, 0.06);
+    in-out property <color> border_secondary: rgba(0, 0, 0, 0.1);
+    in-out property <color> border_active: rgba(108, 92, 231, 0.5);
 
-//     bg_primary: #F5F6FA;
-//     bg_secondary: #FFFFFF;
-//     bg_tertiary: #EEF0F6;
-//     bg_card: #FFFFFF;
-//     bg_card_hover: #F8F9FC;
-//     bg_elevated: #FFFFFF;
-//     bg_input: #F0F2F7;
-//     bg_sidebar: #FFFFFF;
-//     bg_overlay: rgba(0,0,0,0.3);
+    // Text
+    in-out property <color> text_primary: #1A1D24;
+    in-out property <color> text_secondary: #5A5E72;
+    in-out property <color> text_tertiary: #8B8FA3;
+    in-out property <color> text_inverse: #F0F0F3;
 
-//     border_primary: rgba(0,0,0,0.06);
-//     border_secondary: rgba(0,0,0,0.1);
-//     border_active: rgba(108,92,231,0.5);
-
-//     text_primary: #1A1D24;
-//     text_secondary: #5A5E72;
-//     text_tertiary: #8B8FA3;
-//     text_inverse: #F0F0F3;
-
-//     scrollbar_track: #F0F2F7;
-//     scrollbar_thumb: #C8CCD8;
-
-//     sidebar_width: 260px;
-//     sidebar_collapsed: 72px;
-//     topbar_height: 64px;
-//     radius_sm: 8px;
-//     radius_md: 12px;
-//     radius_lg: 16px;
-//     radius_xl: 20px;
-//     radius_full: 9999px;
-
-//     transition_fast: 0.15s;
-//     transition_normal: 0.25s;
-//     transition_slow: 0.4s;
-
-//     font_sans: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-//     font_mono: "JetBrains Mono, Fira Code, Cascadia Code, monospace";
-
-//     shadow_sm: "0 1px 3px rgba(0,0,0,0.06)";
-//     shadow_md: "0 4px 12px rgba(0,0,0,0.08)";
-//     shadow_lg: "0 8px 30px rgba(0,0,0,0.1)";
-//     shadow_xl: "0 16px 50px rgba(0,0,0,0.12)";
-//     shadow_glow: "0 0 20px " + accent_glow;
-// }
+    // Scrollbars
+    in-out property <color> scrollbar_track: #F0F2F7;
+    in-out property <color> scrollbar_thumb: #C8CCD8;
+}

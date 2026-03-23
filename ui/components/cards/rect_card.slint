@@ -1,28 +1,31 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
+import { Cleaner } from "../../global/cleaner_global.slint";
 import { QuickAction } from "../../pages/dashboard/dashboard_data.slint";
 
-export component PluginCard inherits Rectangle {
-    in property <QuickAction> data;
+export component RectCard inherits VerticalLayout {
+    in property <string> title: "Card Title";
+    in property <string> description: "Card Desc";
+    in property <image> source: Icons.activeCleaner;
+
+    in-out property <bool> has-hover: ta.has-hover;
+    in-out property <color> desc_color: Theme.text_tertiary;
+
+    in-out property <length> _x <=> rect.x;
+    in-out property <length> _drop-shadow-blur: 0px;
+    in-out property <brush> _background <=> rect.background;
+    in-out property <color> _drop-shadow-color: Theme.accent;
+    in-out property <brush> _border-color <=> rect.border-color;
 
     height: 56px;
 
-    Rectangle {
+    rect := Rectangle {
         border-width: 1px;
-        x: ta.has-hover ? 4px : 0px;
         border-radius: Theme.radius_md;
+        drop-shadow-blur: _drop-shadow-blur;
+        drop-shadow-color: _drop-shadow-color;
         background: ta.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
         border-color: ta.has-hover ? Theme.border_secondary : Theme.border_primary;
-
-        animate x {
-            duration: Theme.transition_fast;
-            easing: ease;
-        }
-
-        animate drop-shadow-blur {
-            duration: Theme.transition_fast;
-            easing: ease;
-        }
 
         ta := TouchArea {
             mouse-cursor: pointer;
@@ -45,8 +48,9 @@ export component PluginCard inherits Rectangle {
                     height: self.width;
                     background: Theme.bg_card;
                     border-radius: Theme.radius_md;
+
                     Image {
-                        source: data.icon;
+                        source: source;
                         colorize: Theme.accent;
                         width: parent.width - 18px;
                     }
@@ -59,17 +63,20 @@ export component PluginCard inherits Rectangle {
                 horizontal-stretch: 1;
 
                 Text {
-                    text: data.title;
+                    text: title;
                     font-weight: 600;
                     font-size: 0.9rem;
+                    color: Theme.text_primary;
                 }
 
                 Text {
+                    text: description;
+                    color: desc_color;
                     font-size: 0.77rem;
-                    text: data.sub_title;
-                    color: Theme.text_tertiary;
                 }
             }
+
+            @children
         }
     }
 }

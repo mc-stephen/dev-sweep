@@ -1,37 +1,5 @@
 import { Icons } from "../../services/icons.slint";
 
-export enum PathType{
-    File,
-    Folder
-}
-export enum RiskLevel{
-    Safe,
-    Unsafe
-}
-
-export struct CleanDetect {
-    name: string,
-    type: PathType,
-}
-
-export struct CleanTarget {
-    name: string,
-    type: PathType,
-    riskLevel: RiskLevel,
-}
-
-struct Cleaner {
-    id: string,
-    icon: image,
-    name: string,
-    color: color,
-    description: string,
-    detect: [CleanDetect],
-    targets: [CleanTarget],
-    restore_command: string,
-    estimated_savings: string,
-}
-
 export global CleanersData {
     in-out property <bool> show_model: false;
 
@@ -63,49 +31,6 @@ export global CleanersData {
         {
             key: "restore_command",
             desc: "How to restore after cleaning",
-        }
-    ];
-
-    in-out property <[Cleaner]> cleaners: [
-        {
-            id: "my-custom",
-            color: #FF6B6B,
-            name: "My Custom Cleaner",
-            icon: Icons.activeCleaner,
-            estimated_savings: "100MB - 1GB",
-            restore_command: "your-restore-command",
-            description: "Describe what this cleaner does",
-            detect:[
-                {
-                    name: "pubspec.yaml",
-                    type: PathType.File,
-                },
-                {
-                    name: ".dart_tool",
-                    type: PathType.Folder,
-                },
-                {
-                    name: "build",
-                    type: PathType.Folder,
-                },
-            ],
-            targets: [
-                {
-                    name: "ios/ Pods",
-                    type: PathType.Folder,
-                    riskLevel: RiskLevel.Safe,
-                },
-                {
-                    name: ".packages",
-                    type: PathType.File,
-                    riskLevel: RiskLevel.Unsafe,
-                },
-                {
-                    name: "ios/ .symlinks",
-                    type: PathType.Folder,
-                    riskLevel: RiskLevel.Safe,
-                }
-            ],
         }
     ];
 }

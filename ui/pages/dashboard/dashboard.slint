@@ -1,8 +1,11 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
+import { CleanerGlobal } from "../../global/cleaner_global.slint";
 import { StatCard } from "../../components/cards/stat_card.slint";
+import { RectCard } from "../../components/cards/rect_card.slint";
 import { Card, CardHeader } from "../../components/cards/card.slint";
-import { PluginCard } from "../../components/cards/plugin_card.slint";
+import { RecentActivity } from "../../components/recent_activity.slint";
+import { GlobalRecentActivity } from "../../global/activities_global.slint";
 import {
     QuickAction,
     DashboardAdapter,
@@ -19,8 +22,6 @@ import {
 import {
     MyEmptyActivityComponent,
 } from "../../components/empty_activity.slint";
-import { RecentActivity } from "../../components/recent_activity.slint";
-import { GlobalRecentActivity } from "../../global/recent_activity.slint";
 
 
 //===============================
@@ -106,6 +107,7 @@ component QuickActionComp inherits Rectangle {
                     height: self.width;
                     background: Theme.bg_card;
                     border-radius: Theme.radius_md;
+
                     Image {
                         source: data.icon;
                         colorize: Theme.accent;
@@ -123,6 +125,7 @@ component QuickActionComp inherits Rectangle {
                     text: data.title;
                     font-weight: 600;
                     font-size: 0.9rem;
+                    color: Theme.text_primary;
                 }
 
                 Text {
@@ -203,9 +206,38 @@ export component DashboardPage inherits Flickable {
                     padding: 15px;
                     horizontal-stretch: 1;
 
-                    for data[i] in DashboardAdapter.quick_action: QuickActionComp {
-                        i: i;
-                        data: data;
+                    for data[i] in DashboardAdapter.quick_action: RectCard {
+                        title: data.title;
+                        source: data.icon;
+                        description: data.sub-title;
+                        _x: self.has-hover ? 4px : 0px;
+                        _drop-shadow-color: Theme.accent_dark.with-alpha(0.2);
+                        _drop-shadow-blur: i == 0 ? self.has-hover ? 20px : 0px : 0px;
+                        desc_color: i == 0 && self.has-hover ? Theme.text_secondary : Theme.text_tertiary;
+                        _border-color: i == 0 ? Theme.accent.with-alpha(self.has-hover ? 0.4 : 0.2) : self.has-hover ? Theme.border_secondary : Theme.border_primary;
+                        _background: i == 0 ? @linear-gradient(135deg, Theme.accent.with-alpha(0.15), Theme.accent.with-alpha(0.05)) : self.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
+
+                        animate _x {
+                            easing: ease;
+                            duration: Theme.transition_fast;
+                        }
+
+                        animate _drop-shadow-blur {
+                            duration: Theme.transition_fast;
+                            easing: ease;
+                        }
+
+                        VerticalLayout {
+                            width: 12px;
+                            alignment: center;
+
+                            Image {
+                                width: 12px;
+                                height: self.width;
+                                source: Icons.arrowRight;
+                                colorize: Theme.text_tertiary;
+                            }
+                        }
                     }
                 }
             }
@@ -238,7 +270,7 @@ export component DashboardPage inherits Flickable {
         }
 
         //===============================
-        // Active Plugins Section
+        // Available Cleaner Section
         //===============================
         c := Card {
 
@@ -253,12 +285,26 @@ export component DashboardPage inherits Flickable {
                 background: Theme.border_primary;
             }
 
-            GridBox {
-                for data[i] in 20: PluginCard {
-                    row: Math.floor(i / plugin_per_row);
-                    // max-width: plugin-min-max-width.max;
-                    // min-width: plugin-min-max-width.min;
-                    data: DashboardAdapter.quick_action[0];
+            HorizontalLayout {
+                alignment: start;
+
+                GridBox {
+                    width: 100%;
+
+                    for cleaner[i] in CleanerGlobal.cleaners: RectCard {
+                        title: cleaner.name;
+                        source: cleaner.icon;
+                        _x: self.has-hover ? 4px : 0px;
+                        description: cleaner.description;
+                        row: Math.floor(i / plugin_per_row);
+                        max-width: plugin-min-max-width.max;
+                        // min-width: plugin-min-max-width.min;
+
+                        animate _x {
+                            easing: ease;
+                            duration: Theme.transition_fast;
+                        }
+                    }
                 }
             }
         }

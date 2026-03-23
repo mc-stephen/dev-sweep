@@ -1,13 +1,14 @@
 import { Theme } from "./theme/theme.slint";
+import { ThemeType } from "theme/theme.slint";
 import { Icons } from "./services/icons.slint";
 import { NavItem } from "components/nav_item.slint";
 import { CleanersPage } from "pages/cleaners/cleaners.slint";
 import { SettingsPage } from "pages/settings/settings.slint";
-import { ScanAndCleanPage } from "pages/scan_and_clean.slint";
 import { ToggleSwitch } from "components/toggle_switch.slint";
 import { TextField } from "components/inputs/text_field.slint";
 import { DashboardPage } from "pages/dashboard/dashboard.slint";
 import { IconButton } from "components/buttons/icon_button.slint";
+import { ScanAndCleanPage } from "pages/scan_clean/scan_clean.slint";
 import { ActivityLogPage } from "pages/activity_log/activity_log.slint";
 export { DashboardAdapter } from "./pages/dashboard/dashboard_data.slint";
 import { TrafficLight } from "components/window_control/traffic_light.slint";
@@ -34,8 +35,8 @@ import {
     callback on_route(int);
     in-out property <int> active-page;
 
-    width: 250px;
     min-height: 700px;
+    width: Theme.sidebar_width;
     background: Theme.bg_sidebar;
 
     VerticalBox {
@@ -146,7 +147,12 @@ import {
                     }
                 }
 
-                ToggleSwitch { }
+                ToggleSwitch {
+                    checked: Theme.current_theme == ThemeType.Light;
+                    toggled => {
+                        Theme.current_theme = self.checked ? ThemeType.Light : ThemeType.Dark;
+                    }
+                }
 
                 VerticalLayout {
                     alignment: center;

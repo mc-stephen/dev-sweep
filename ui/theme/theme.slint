@@ -1,58 +1,70 @@
+import { DarkTheme } from "./dark.slint";
+import { LightTheme } from "light.slint";
+
+export enum ThemeType{
+    Dark,
+    Light,
+    System,
+}
+
 export global Theme {
+    in-out property <ThemeType> current_theme: ThemeType.Dark;
+    property <bool> is_dark_theme: current_theme == ThemeType.Dark;
+
     // Base palette
     in-out property <color> accent: #6C5CE7;
-    // in-out property <color> accent_light: #A29BFE;
+    in-out property <color> accent_glow: #6c5ce74d;
     in-out property <color> accent_light: accent.brighter(0.3);
-    // in-out property <color> accent_dark: #5641CC;
     in-out property <color> accent_dark: accent.with-alpha(0.3);
-    // in-out property <color> accent_glow: #6c5ce74d; // rgba(108, 92, 231, 0.3);
 
     // Status colors
     in-out property <color> success: #00B894;
-    in-out property <color> success_bg: success.with-alpha(0.12); // rgba(0, 184, 148, 0.12);
+    in-out property <color> success_bg: success.with-alpha(0.12);
+
     in-out property <color> warning: #FDCB6E;
     in-out property <color> warning_bg: warning.with-alpha(0.12);
-    // in-out property <color> warning_bg: rgba(253, 203, 110, 0.12);
+
     in-out property <color> danger: #E17055;
-    // in-out property <color> danger_bg: rgba(225, 112, 85, 0.12);
+    in-out property <color> danger_bg: danger.with-alpha(0.12);
+
     in-out property <color> info: #74B9FF;
-    // in-out property <color> info_bg: rgba(116, 185, 255, 0.12);
+    in-out property <color> info_bg: info.with-alpha(0.12);
 
     // Backgrounds
-    in-out property <color> bg_primary: #0D0F12;
-    in-out property <color> bg_secondary: #13161B;
-    in-out property <color> bg_tertiary: #1A1D24;
-    in-out property <color> bg_card: #161920;
-    in-out property <color> bg_card_hover: #1C2029;
-    in-out property <color> bg_elevated: #1E222B;
-    in-out property <color> bg_input: #1A1D24;
-    in-out property <color> bg_sidebar: #0F1115;
-    in-out property <color> bg_overlay: rgba(0, 0, 0, 0.6);
+    in-out property <color> bg_primary: is_dark_theme ? DarkTheme.bg_primary : LightTheme.bg_primary;
+    in-out property <color> bg_secondary: is_dark_theme ? DarkTheme.bg_secondary : LightTheme.bg_secondary;
+    in-out property <color> bg_tertiary: is_dark_theme ? DarkTheme.bg_tertiary : LightTheme.bg_tertiary;
+    in-out property <color> bg_card: is_dark_theme ? DarkTheme.bg_card : LightTheme.bg_card;
+    in-out property <color> bg_card_hover: is_dark_theme ? DarkTheme.bg_card_hover : LightTheme.bg_card_hover;
+    in-out property <color> bg_elevated: is_dark_theme ? DarkTheme.bg_elevated : LightTheme.bg_elevated;
+    in-out property <color> bg_input: is_dark_theme ? DarkTheme.bg_input : LightTheme.bg_input;
+    in-out property <color> bg_sidebar: is_dark_theme ? DarkTheme.bg_sidebar : LightTheme.bg_sidebar;
+    in-out property <color> bg_overlay: is_dark_theme ? DarkTheme.bg_overlay : LightTheme.bg_overlay;
 
     // Borders
-    in-out property <color> border_primary: rgba(255, 255, 255, 0.06);
-    in-out property <color> border_secondary: rgba(255, 255, 255, 0.1);
-    in-out property <color> border_active: rgba(108, 92, 231, 0.5);
+    in-out property <color> border_active: is_dark_theme ? DarkTheme.border_active : LightTheme.border_active;
+    in-out property <color> border_primary: is_dark_theme ? DarkTheme.border_primary : LightTheme.border_primary;
+    in-out property <color> border_secondary: is_dark_theme ? DarkTheme.border_secondary : LightTheme.border_secondary;
 
     // Text
-    in-out property <color> text_primary: #F0F0F3;
-    in-out property <color> text_secondary: #8B8FA3;
-    in-out property <color> text_tertiary: #5A5E72;
-    in-out property <color> text_inverse: #0D0F12;
+    in-out property <color> text_primary: is_dark_theme ? DarkTheme.text_primary : LightTheme.text_primary;
+    in-out property <color> text_inverse: is_dark_theme ? DarkTheme.text_inverse : LightTheme.text_inverse;
+    in-out property <color> text_tertiary: is_dark_theme ? DarkTheme.text_tertiary : LightTheme.text_tertiary;
+    in-out property <color> text_secondary: is_dark_theme ? DarkTheme.text_secondary : LightTheme.text_secondary;
 
     // Scrollbars
-    in-out property <color> scrollbar_track: #13161B;
-    in-out property <color> scrollbar_thumb: #2A2E3A;
+    in-out property <color> scrollbar_track: is_dark_theme ? DarkTheme.scrollbar_track : LightTheme.scrollbar_track;
+    in-out property <color> scrollbar_thumb: is_dark_theme ? DarkTheme.scrollbar_thumb : LightTheme.scrollbar_thumb;
 
     // Sizes
-    in-out property <length> sidebar_width: 260px;
-    in-out property <length> sidebar_collapsed: 72px;
-    in-out property <length> topbar_height: 52px;
     in-out property <length> radius_sm: 8px;
     in-out property <length> radius_md: 12px;
     in-out property <length> radius_lg: 16px;
     in-out property <length> radius_xl: 20px;
     in-out property <float> radius_full: 0.5; // 50%
+    in-out property <length> topbar_height: 52px;
+    in-out property <length> sidebar_width: 250px;
+    in-out property <length> sidebar_collapsed: 72px;
 
     // Transitions
     in-out property <duration> transition_fast: 0.15s;
@@ -64,9 +76,9 @@ export global Theme {
     in-out property <string> font_mono: "JetBrains Mono, Fira Code, Cascadia Code, monospace";
 
     // Shadows
-    in-out property <string> shadow_sm: "0 1px 2px rgba(0,0,0,0.2)";
-    in-out property <string> shadow_md: "0 4px 12px rgba(0,0,0,0.25)";
-    in-out property <string> shadow_lg: "0 8px 30px rgba(0,0,0,0.35)";
-    in-out property <string> shadow_xl: "0 16px 50px rgba(0,0,0,0.45)";
+    // in-out property <string> shadow_sm: "0 1px 2px rgba(0,0,0,0.2)";
+    // in-out property <string> shadow_md: "0 4px 12px rgba(0,0,0,0.25)";
+    // in-out property <string> shadow_lg: "0 8px 30px rgba(0,0,0,0.35)";
+    // in-out property <string> shadow_xl: "0 16px 50px rgba(0,0,0,0.45)";
     in-out property <color> shadow_glow: accent_dark; // #6C5CE74D; // "0 0 20px rgba(108, 92, 231, 0.3)";
 }

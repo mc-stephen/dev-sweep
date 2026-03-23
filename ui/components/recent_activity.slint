@@ -1,6 +1,6 @@
 import { Theme } from "../theme/theme.slint";
 import { Icons } from "../services/icons.slint";
-import { ActivityStruct } from "../global/recent_activity.slint";
+import { ActivityStruct } from "../global/activities_global.slint";
 import { HorizontalDivider } from "divider/horizontal_divider.slint";
 
 export component RecentActivity inherits VerticalLayout {
@@ -50,6 +50,7 @@ export component RecentActivity inherits VerticalLayout {
                     font-weight: 600;
                     font-size: 0.85rem;
                     text: "Cleaning Complete";
+                    color: Theme.text_primary;
                 }
 
                 Text {
