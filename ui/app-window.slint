@@ -313,15 +313,74 @@ export component AppWindow inherits Window {
         VerticalLayout {
             width: 220px;
             spacing: 6px;
-            padding: 10px;
+            // padding: 10px; // If parent has padding, child element doesn't obey x,y value
             alignment: end;
-            x: root.width - self.width;
+            height: parent.height - 10px;
+            x: root.width - self.width - self.spacing;
+            y: root.height - self.height - self.spacing;
 
-            for data[i] in 0: Rectangle {
-                width: 200px;
-                background: red;
-                min-height: 50px;
-                border-radius: 10px;
+            for data[i] in 5: Rectangle {
+                border-width: 1px;
+                background: Theme.bg_card;
+                border-radius: Theme.radius_sm;
+                x: i == 0 ? self.width / 2 : 0px;
+                border-color: Theme.border_primary;
+
+                VerticalLayout {
+                    alignment: center;
+                    horizontal-stretch: 1;
+
+                    HorizontalLayout {
+                        height: 22px;
+                        spacing: 8px;
+                        padding-left: 5px;
+                        padding-right: 5px;
+
+                        VerticalLayout {
+                            alignment: center;
+
+                            Image {
+                                width: 15px;
+                                height: self.width;
+                                source: Icons.info_bold;
+                                colorize: Theme.success;
+                            }
+                        }
+
+                        Text {
+                            y: 1px;
+                            font-size: 0.80rem;
+                            text: "Toast Title";
+                            color: Theme.text_primary;
+                            vertical-alignment: center;
+                        }
+
+                        VerticalLayout {
+                            alignment: center;
+
+                            IconButton {
+                                width: 15px;
+                                icon: Icons.close;
+                                height: self.width;
+                                bg: Theme.bg_secondary;
+                                icon_size: self.width * 0.5;
+                            }
+                        }
+                    }
+
+                    HorizontalDivider { }
+
+                    HorizontalLayout {
+                        padding: 10px;
+
+                        Text {
+                            wrap: word-wrap;
+                            font-size: 0.78rem;
+                            text: "Toast description";
+                            color: Theme.text_tertiary;
+                        }
+                    }
+                }
             }
         }
     }
