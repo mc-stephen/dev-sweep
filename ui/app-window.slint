@@ -200,6 +200,7 @@ component BodyHeader inherits Rectangle {
     }
 
     HorizontalLayout {
+        spacing: 10px;
 
         VerticalLayout {
             alignment: center;
@@ -218,24 +219,25 @@ component BodyHeader inherits Rectangle {
             alignment: center;
 
             HorizontalLayout {
-                spacing: 5px;
+                spacing: 10px;
                 padding-right: 10px;
                 horizontal-stretch: 0;
 
+                TextField {
+                    placeholder: "Search projects...";
+                }
+
                 HorizontalLayout {
-                    padding-right: 5px;
-                    TextField {
-                        placeholder: "Search projects...";
+                    spacing: 5px;
+
+                    IconButton {
+                        icon_size: 15px;
+                        icon: Icons.notification;
                     }
-                }
 
-                IconButton {
-                    icon_size: 15px;
-                    icon: Icons.notification;
-                }
-
-                IconButton {
-                    icon: Icons.bolt;
+                    IconButton {
+                        icon: Icons.bolt;
+                    }
                 }
             }
         }
@@ -243,6 +245,86 @@ component BodyHeader inherits Rectangle {
         // Display on when it is Window or Linux
         if Platform.os == OperatingSystemType.windows || Platform.os == OperatingSystemType.linux: 
         WindowButtons { }
+    }
+}
+
+//======================================
+// Notification
+//======================================
+component Toast inherits VerticalLayout {
+    in property <length> parent_height;
+
+    width: 220px;
+    spacing: 6px;
+    visible: false;
+    alignment: end;
+    // padding: 10px; // If parent has padding, child element doesn't obey x,y value
+    height: parent_height - 10px;
+    x: root.width - self.width - self.spacing;
+    y: root.height - self.height - self.spacing;
+
+    for data[i] in 5: Rectangle {
+        border-width: 1px;
+        background: Theme.bg_card;
+        border-radius: Theme.radius_sm;
+        x: i == 0 ? self.width / 2 : 0px;
+        border-color: Theme.border_primary;
+
+        VerticalLayout {
+            alignment: center;
+            horizontal-stretch: 1;
+
+            HorizontalLayout {
+                height: 22px;
+                spacing: 8px;
+                padding-left: 5px;
+                padding-right: 5px;
+
+                VerticalLayout {
+                    alignment: center;
+
+                    Image {
+                        width: 15px;
+                        height: self.width;
+                        source: Icons.info_bold;
+                        colorize: Theme.success;
+                    }
+                }
+
+                Text {
+                    y: 1px;
+                    font-size: 0.80rem;
+                    text: "Toast Title";
+                    color: Theme.text_primary;
+                    vertical-alignment: center;
+                }
+
+                VerticalLayout {
+                    alignment: center;
+
+                    IconButton {
+                        width: 15px;
+                        icon: Icons.close;
+                        height: self.width;
+                        bg: Theme.bg_secondary;
+                        icon_size: self.width * 0.5;
+                    }
+                }
+            }
+
+            HorizontalDivider { }
+
+            HorizontalLayout {
+                padding: 10px;
+
+                Text {
+                    wrap: word-wrap;
+                    font-size: 0.78rem;
+                    text: "Toast description";
+                    color: Theme.text_tertiary;
+                }
+            }
+        }
     }
 }
 
@@ -261,7 +343,7 @@ export component AppWindow inherits Window {
     preferred-width: 1000px;
     preferred-height: 600px;
     background: transparent;
-    // resize-border-width: 6px;
+    resize-border-width: 5px;
 
     c := Rectangle {
         clip: true;
@@ -288,100 +370,28 @@ export component AppWindow inherits Window {
             // Body
             //================================
             VerticalLayout {
-                alignment: start;
                 vertical-stretch: 1;
+                alignment: root.active-page == 1 || root.active-page == 2 || root.active-page == 3 ? stretch : start;
 
                 BodyHeader {
                     start_drag => root.start_system_move();
                     title: root.active-page == 0 ? "Dashboard" : root.active-page == 1 ? "Scan & Clean" : root.active-page == 2 ? "Cleaners" : root.active-page == 3 ? "Activity" : "Settings";
                 }
 
-                // Where the body (pages) will be rendered
+                // Where the (pages) will be rendered
                 if root.active-page == 0: DashboardPage { }
                 if root.active-page == 1: ScanAndCleanPage { }
-                if root.active-page == 2: CleanersPage {
-                    win_height: root.height;
-                }
+                if root.active-page == 2: CleanersPage { }
                 if root.active-page == 3: ActivityLogPage { }
                 if root.active-page == 4: SettingsPage { }
             }
         }
 
         //================================
-        // Notification Dialog
+        // Notification Dialog {}
         //================================
-        VerticalLayout {
-            width: 220px;
-            spacing: 6px;
-            // padding: 10px; // If parent has padding, child element doesn't obey x,y value
-            alignment: end;
-            height: parent.height - 10px;
-            x: root.width - self.width - self.spacing;
-            y: root.height - self.height - self.spacing;
-
-            for data[i] in 5: Rectangle {
-                border-width: 1px;
-                background: Theme.bg_card;
-                border-radius: Theme.radius_sm;
-                x: i == 0 ? self.width / 2 : 0px;
-                border-color: Theme.border_primary;
-
-                VerticalLayout {
-                    alignment: center;
-                    horizontal-stretch: 1;
-
-                    HorizontalLayout {
-                        height: 22px;
-                        spacing: 8px;
-                        padding-left: 5px;
-                        padding-right: 5px;
-
-                        VerticalLayout {
-                            alignment: center;
-
-                            Image {
-                                width: 15px;
-                                height: self.width;
-                                source: Icons.info_bold;
-                                colorize: Theme.success;
-                            }
-                        }
-
-                        Text {
-                            y: 1px;
-                            font-size: 0.80rem;
-                            text: "Toast Title";
-                            color: Theme.text_primary;
-                            vertical-alignment: center;
-                        }
-
-                        VerticalLayout {
-                            alignment: center;
-
-                            IconButton {
-                                width: 15px;
-                                icon: Icons.close;
-                                height: self.width;
-                                bg: Theme.bg_secondary;
-                                icon_size: self.width * 0.5;
-                            }
-                        }
-                    }
-
-                    HorizontalDivider { }
-
-                    HorizontalLayout {
-                        padding: 10px;
-
-                        Text {
-                            wrap: word-wrap;
-                            font-size: 0.78rem;
-                            text: "Toast description";
-                            color: Theme.text_tertiary;
-                        }
-                    }
-                }
-            }
+        Toast {
+            parent_height: parent.height;
         }
     }
 }

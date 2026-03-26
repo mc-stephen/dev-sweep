@@ -1,11 +1,14 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
 import { ScrollView, ListView } from "std-widgets.slint";
+import { ActivityLogData, FilterBy } from "activity_log_data.slint";
 import { Card, CardHeader } from "../../components/cards/card.slint";
-import { ActivityLogData, LogStatus } from "activity_log_data.slint";
+import { GroupedOption } from "../../components/grouped_option.slint";
 import { RecentActivity } from "../../components/recent_activity.slint";
 import { GlobalRecentActivity } from "../../global/activities_global.slint";
-import { MyEmptyActivityComponent } from "../../components/empty_activity.slint";
+import {
+    MyEmptyActivityComponent,
+} from "../../components/empty_activity.slint";
 import {
     HorizontalDivider,
 } from "../../components/divider/horizontal_divider.slint";
@@ -15,14 +18,15 @@ import {
 import {
     VerticalDivider,
 } from "../../components/divider/vertical_divider.slint";
+import { TerminalLog } from "../../components/terminal_log.slint";
 
 
 //==================================
 //
 //==================================
 component ActivityTimeline inherits Card {
-
     CardHeader {
+        spacing: 15px;
         padding-top: 12px;
         padding-bottom: 12px;
         source: Icons.recent;
@@ -31,46 +35,11 @@ component ActivityTimeline inherits Card {
         HorizontalLayout {
             spacing: 6px;
 
-            Rectangle {
-                clip: true;
-                height: 28px;
-                border-width: 1px;
-                background: Theme.bg_tertiary;
-                border-radius: Theme.radius_sm;
-                border-color: Theme.border_secondary;
-
-                HorizontalLayout {
-                    for filter[i] in ActivityLogData.filter_list: HorizontalLayout {
-
-                        Rectangle {
-                            background: ActivityLogData.filter_by == filter.value ? Theme.accent : transparent;
-
-                            filter_touch_area := TouchArea {
-                                mouse-cursor: pointer;
-                                clicked => {
-                                    ActivityLogData.filter_by = filter.value;
-                                }
-                            }
-
-                            HorizontalLayout {
-                                padding-left: 10px;
-                                padding-right: 10px;
-
-                                Text {
-                                    y: 0.5px;
-                                    font-weight: 500;
-                                    font-size: 0.8rem;
-                                    text: filter.label;
-                                    vertical-alignment: center;
-                                    color: filter_touch_area.has-hover || ActivityLogData.filter_by == filter.value ? white : Theme.text_secondary;
-                                }
-                            }
-                        }
-
-                        if i != (ActivityLogData.filter_list.length - 1): VerticalDivider {
-                            height_size: parent.height;
-                        }
-                    }
+            GroupedOption {
+                data: ActivityLogData.filter_list;
+                selected: ActivityLogData.filterToString(ActivityLogData.filter_by);
+                clicked(val) => {
+                    ActivityLogData.filter_by = ActivityLogData.stringToFilter(val);
                 }
             }
 
@@ -155,98 +124,15 @@ component ActivityLog inherits Card {
     VerticalLayout {
         padding: 15px;
 
-        Rectangle {
-            border-width: 1px;
-            background: Theme.bg_primary;
-            border-radius: Theme.radius_md;
-            border-color: Theme.border_primary;
-
-            ScrollView {
-                vertical-stretch: 1;
-
-                VerticalLayout {
-                    padding: 15px;
-                    spacing: 10px;
-
-                    for data[i] in ActivityLogData.logs: HorizontalLayout {
-                        spacing: 10px;
-                        alignment: start;
-
-                        timestamp := Text {
-                            y: 2.5px;
-                            font-size: 0.9rem;
-                            text: data.timestamp;
-                            color: Theme.text_tertiary;
-                        }
-
-                        HorizontalLayout {
-                            width: 0.7rem * 7;
-
-                            Rectangle {
-                                    // width: 50px;
-                                    width: status.width + 10px;
-                                height: status.height + 5px;
-                                border-radius: self.height * Theme.radius_full;
-                                background: {
-                                    if data.status == LogStatus.Info {
-                                        Theme.info.transparentize(0.8)
-                                    } else if data.status == LogStatus.Success {
-                                        Theme.success.transparentize(0.8)
-                                    } else if data.status == LogStatus.Warning {
-                                        Theme.warning.transparentize(0.8)
-                                    } else {
-                                        Theme.danger.transparentize(0.8)
-                                    }
-                                };
-                                status := Text {
-                                    y: 4px;
-                                    font-weight: 600;
-                                    font-size: 0.7rem;
-                                    color: {
-                                        if data.status == LogStatus.Info {
-                                            Theme.info
-                                        } else if data.status == LogStatus.Success {
-                                            Theme.success
-                                        } else if data.status == LogStatus.Warning {
-                                            Theme.warning
-                                        } else {
-                                            Theme.danger
-                                        }
-                                    };
-                                    text: {
-                                        if data.status == LogStatus.Info {
-                                            "INFO"
-                                        } else if data.status == LogStatus.Success {
-                                            "SUCCESS"
-                                        } else if data.status == LogStatus.Warning {
-                                            "WARNING"
-                                        } else {
-                                            "DANGER"
-                                        }
-                                    };
-                                }
-                            }
-                        }
-
-                        message := Text {
-                            y: 2.5px;
-                            wrap: word-wrap;
-                            font-size: 0.9rem;
-                            text: data.message;
-                            color: Theme.text_secondary;
-                        }
-                    }
-                }
-            }
+        TerminalLog {
+            logs: ActivityLogData.logs;
         }
     }
 }
 
 export component ActivityLogPage inherits VerticalLayout {
-    height: 90%;
     padding: 15px;
     spacing: 15px;
-    // alignment: stretch;
 
     ActivityTimeline { }
 

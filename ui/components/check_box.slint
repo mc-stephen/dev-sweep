@@ -1,0 +1,42 @@
+
+import { Theme } from "../theme/theme.slint";
+export component MyCheckBox inherits Rectangle {
+    // Properties
+    in-out property <bool> checked;
+    in property <bool> enabled: true;
+    
+    // Callbacks
+    callback toggled(bool);
+
+    ta := TouchArea {
+        enabled: root.enabled;
+        mouse-cursor: self.has-hover ? pointer : default;
+        clicked => {
+            root.checked = !root.checked;
+            root.toggled(root.checked);
+        }
+    }
+
+    // Styling The Check Box Visual
+    width: 18px;
+    height: self.width;
+    border-radius: 6px;
+    border-width: 1.5px;
+    background: root.checked ? Theme.accent_light : transparent;
+    border-color: root.checked ? Theme.accent_light : Theme.text_tertiary;
+            
+    // Animation for the checkMark
+    animate background { duration: 50ms; }
+    animate border-color { duration: 50ms; }
+
+    // The CheckMark (using a simple path or text)
+    if (root.checked): Path {
+        width: 75%;
+        height: 75%;
+        stroke-width: 2px;
+        viewbox-width: 100;
+        viewbox-height: 100;
+        stroke: Theme.bg_card;
+        commands: "M 20 50 L 40 70 L 80 30";
+    }
+}

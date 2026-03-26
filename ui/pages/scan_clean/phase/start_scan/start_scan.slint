@@ -1,0 +1,324 @@
+import { Theme } from "../../../../theme/theme.slint";
+import { Icons } from "../../../../services/icons.slint";
+import { RectCard } from "../../../../components/cards/rect_card.slint";
+import {
+    HorizontalDivider,
+} from "../../../../components/divider/horizontal_divider.slint";
+import {
+    TextIconButton,
+} from "../../../../components/buttons/text_icon_button.slint";
+import { CheckBox } from "std-widgets.slint";
+import { MyCheckBox } from "../../../../components/check_box.slint";
+import { TextField } from "../../../../components/inputs/text_field.slint";
+import { GroupedOption } from "../../../../components/grouped_option.slint";
+import { IconButton } from "../../../../components/buttons/icon_button.slint";
+import { StartScanData } from "start_scan_data.slint";
+
+//==========================
+// Label
+//==========================
+component Label inherits Rectangle {
+    in property <string> text;
+    in property <image> source;
+    in property <bool> has-source: true;
+    in property <MouseCursor> cursor: default;
+    in property <bool> has-hover: ta.has-hover;
+    in property <brush> text_color: Theme.text_tertiary;
+
+    background: Theme.bg_tertiary;
+    border-radius: self.height / Theme.radius_full;
+
+    ta := TouchArea {
+        mouse-cursor: cursor;
+    }
+
+    HorizontalLayout {
+        spacing: 5px;
+        padding: 8px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        if has-source: VerticalLayout {
+            alignment: center;
+
+            Image {
+                width: 10px;
+                source: source;
+                height: self.width;
+                colorize: Theme.text_tertiary;
+            }
+        }
+
+        HorizontalLayout {
+            Text {
+                y: 1px;
+                text: text;
+                font-weight: 500;
+                color: text_color;
+                font-size: 0.72rem;
+                vertical-alignment: center;
+            }
+        }
+    }
+}
+
+export component StartScan inherits VerticalLayout {
+
+    callback on_start_scan(bool);
+
+    HorizontalDivider { }
+
+    //==========================
+    // Header
+    //==========================
+    Rectangle {
+        vertical-stretch: 0;
+        background: Theme.bg_card;
+
+        HorizontalLayout {
+            padding: 10px;
+            alignment: space-between;
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+            HorizontalLayout {
+                spacing: 10px;
+
+                HorizontalLayout {
+                    spacing: 3px;
+
+                    VerticalLayout {
+                        alignment: center;
+
+                        Image {
+                            width: 15px;
+                            source: Icons.folder;
+                            colorize: Theme.text_tertiary;
+                        }
+                    }
+
+                    Text {
+                        y: 1px;
+                        font-weight: 600;
+                        font-size: 0.78rem;
+                        text: "SCAN DIRECTORY";
+                        color: Theme.text_tertiary;
+                        vertical-alignment: center;
+                    }
+                }
+
+                Rectangle {
+                    height: 32px;
+                    clip: true;
+                    border-width: 1px;
+                    border-radius: Theme.radius_sm;
+                    border-color: dir_txt_field.has-focus ? Theme.accent : Theme.border_secondary;
+
+                    HorizontalLayout {
+
+                        dir_txt_field := TextField {
+                            height: 32px;
+                            icon_size: 14px;
+                            show_icon: false;
+                            placeholder: "~/";
+                            border-width: 0px;
+                            border-radius: 0px;
+                            source: Icons.newScan;
+                        }
+
+                        IconButton {
+                            size: 32px;
+                            icon_size: 15px;
+                            border-width: 0px;
+                            icon: Icons.folder;
+                            border-radius: 0px;
+                            bg: Theme.bg_secondary;
+                            bg_hover: Theme.accent;
+                        }
+                    }
+                }
+            }
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+            HorizontalLayout {
+                spacing: 10px;
+
+                HorizontalLayout {
+                    spacing: 3px;
+
+                    VerticalLayout {
+                        alignment: center;
+
+                        Image {
+                            width: 15px;
+                            source: Icons.sliders;
+                            colorize: Theme.text_tertiary;
+                        }
+                    }
+
+                    Text {
+                        y: 1px;
+                        text: "OPTION";
+                        font-weight: 600;
+                        font-size: 0.78rem;
+                        color: Theme.text_tertiary;
+                        vertical-alignment: center;
+                    }
+                }
+
+                HorizontalLayout {
+                    spacing: 5px;
+                    alignment: center;
+
+                    for option[i] in StartScanData.options: TextIconButton {
+                        height: 30px;
+                        icon_size: 10px;
+                        font-weight: 400;
+                        border-width: 1px;
+                        text: option.label;
+                        font-size: 0.72rem;
+                        source: option.icon;
+                        background: Theme.bg_elevated;
+                        border-radius: Theme.radius_sm;
+                        border-color: option.selected ? Theme.accent : Theme.border_secondary;
+                        text_color: option.selected ? Theme.accent_light : self.has-hover ? Theme.text_primary : Theme.text_secondary;
+                        icon_color: option.selected ? Theme.accent_light : self.has-hover ? Theme.text_primary : Theme.text_secondary;
+                        clicked => {
+                            StartScanData.options[i].selected = !option.selected;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    HorizontalDivider { }
+
+    //==========================
+    // Body
+    //==========================
+    VerticalLayout {
+        spacing: 12px;
+        vertical-stretch: 1;
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        HorizontalLayout {
+            spacing: 5px;
+            padding: 15px;
+            padding-bottom: 0px;
+
+            Text {
+                font-weight: 600;
+                font-size: 0.88rem;
+                horizontal-stretch: 1;
+                vertical-alignment: center;
+                color: Theme.text_secondary;
+                text: "Select project types to scan";
+            }
+
+            Label {
+                cursor: pointer;
+                has-source: false;
+                text: "Select All";
+                border-radius: 5px;
+                background: self.has-hover ? Theme.bg_tertiary : transparent;
+                text_color: self.has-hover ? Theme.accent_light : Theme.text_tertiary;
+            }
+
+            Label {
+                text: "Clear";
+                cursor: pointer;
+                has-source: false;
+                border-radius: 5px;
+                background: self.has-hover ? Theme.bg_tertiary : transparent;
+                text_color: self.has-hover ? Theme.accent_light : Theme.text_tertiary;
+            }
+        }
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Flickable {
+            vertical-stretch: 1;
+            horizontal-stretch: 0;
+            min-width: body.min-width;
+
+            VerticalLayout {
+                alignment: start;
+
+                body := GridLayout {
+                    spacing: 5px;
+                    padding: 10px;
+                    padding-top: 0px;
+
+                    for plugin[i] in 15: RectCard {
+                        description: "";
+                        source: Icons.appIcon;
+                        row: Math.floor(i / 6);
+                        source_bg: Theme.accent_light.transparentize(0.9);
+                        colorize: Theme.accent.transparentize(cb.checked ? 0 : 0.4);
+                        title_color: cb.checked ? Theme.text_primary : Theme.text_tertiary;
+                        background: cb.checked ? Theme.bg_card : self.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
+                        border-color: cb.checked ? Theme.accent : self.has-hover ? Theme.border_secondary : Theme.border_primary;
+
+                        clicked => {
+                            cb.checked = !cb.checked;
+                        }
+
+                        VerticalLayout {
+                            alignment: center;
+
+                            cb := MyCheckBox {
+                                toggled(val) => {
+                                    //
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    HorizontalDivider { }
+
+    //==========================
+    // Footer
+    //==========================
+    Rectangle {
+        vertical-stretch: 0;
+        background: Theme.bg_card;
+
+        HorizontalLayout {
+            padding: 12px;
+            spacing: 15px;
+            alignment: space-between;
+
+            VerticalLayout {
+                alignment: center;
+
+                HorizontalLayout {
+                    spacing: 5px;
+                    Label {
+                        text: "~/";
+                        source: Icons.folder;
+                    }
+
+                    Label {
+                        text: "10 types";
+                        source: Icons.activeCleaner;
+                    }
+
+                    Label {
+                        source: Icons.settings;
+                        text: "Deep · Safe · Dry run · Hidden";
+                    }
+                }
+            }
+
+            TextIconButton {
+                text: "Start Scan";
+                source: Icons.plus;
+                border-radius: self.height * Theme.radius_full;
+                clicked => on_start_scan(true);
+            }
+        }
+    }
+}

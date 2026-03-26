@@ -482,15 +482,6 @@ component BodyComponent inherits GridLayout {
 }
 
 export component CleanersPage inherits Rectangle {
-    in property <length> win_height;
-
-    init => {
-        root.height = win_height - Theme.topbar_height;
-    }
-
-    changed win_height => {
-        root.height = win_height - Theme.topbar_height;
-    }
 
     Flickable {
         min-width: vl.min-width;

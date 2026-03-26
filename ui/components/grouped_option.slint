@@ -1,0 +1,53 @@
+import { Theme } from "../theme/theme.slint";
+import { VerticalDivider } from "divider/vertical_divider.slint";
+
+export struct GroupedOptionData {
+    label: string,
+    value: string,
+}
+
+export component GroupedOption inherits Rectangle {
+    in-out property <string> selected;
+    in property <[GroupedOptionData]> data;
+
+    callback clicked(string);
+
+    clip: true;
+    height: 28px;
+    border-width: 1px;
+    background: Theme.bg_tertiary;
+    border-radius: Theme.radius_sm;
+    border-color: Theme.border_secondary;
+
+    HorizontalLayout {
+        for filter[i] in data: HorizontalLayout {
+
+            Rectangle {
+                background: selected == filter.value ? Theme.accent : transparent;
+
+                filter_touch_area := TouchArea {
+                    mouse-cursor: pointer;
+                    clicked => clicked(filter.value);
+                }
+
+                HorizontalLayout {
+                    padding-left: 10px;
+                    padding-right: 10px;
+
+                    Text {
+                        y: 0.5px;
+                        font-weight: 500;
+                        font-size: 0.8rem;
+                        text: filter.label;
+                        vertical-alignment: center;
+                        color: filter_touch_area.has-hover || selected == filter.value ? Theme.text_primary : Theme.text_secondary;
+                    }
+                }
+            }
+
+            if i != (data.length - 1): VerticalDivider {
+                height_size: parent.height;
+            }
+        }
+    }
+}

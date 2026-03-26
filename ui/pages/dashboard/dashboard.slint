@@ -114,36 +114,39 @@ export component DashboardPage inherits Flickable {
                     padding: 15px;
                     horizontal-stretch: 1;
 
-                    for data[i] in DashboardAdapter.quick_action: RectCard {
-                        title: data.title;
-                        source: data.icon;
-                        description: data.sub-title;
-                        _x: self.has-hover ? 4px : 0px;
-                        _drop-shadow-color: Theme.accent_dark.with-alpha(0.2);
-                        _drop-shadow-blur: i == 0 ? self.has-hover ? 20px : 0px : 0px;
-                        desc_color: i == 0 && self.has-hover ? Theme.text_secondary : Theme.text_tertiary;
-                        _border-color: i == 0 ? Theme.accent.with-alpha(self.has-hover ? 0.4 : 0.2) : self.has-hover ? Theme.border_secondary : Theme.border_primary;
-                        _background: i == 0 ? @linear-gradient(135deg, Theme.accent.with-alpha(0.15), Theme.accent.with-alpha(0.05)) : self.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
+                    for data[i] in DashboardAdapter.quick_action: VerticalLayout {
 
-                        animate _x {
-                            easing: ease;
-                            duration: Theme.transition_fast;
-                        }
+                        RectCard {
+                            title: data.title;
+                            source: data.icon;
+                            description: data.sub-title;
+                            x: self.has-hover ? 4px : 0px;
+                            drop-shadow-color: Theme.accent_dark.with-alpha(0.2);
+                            drop-shadow-blur: i == 0 ? self.has-hover ? 20px : 0px : 0px;
+                            desc_color: i == 0 && self.has-hover ? Theme.text_secondary : Theme.text_tertiary;
+                            border-color: i == 0 ? Theme.accent.with-alpha(self.has-hover ? 0.4 : 0.2) : self.has-hover ? Theme.border_secondary : Theme.border_primary;
+                            background: i == 0 ? @linear-gradient(135deg, Theme.accent.with-alpha(0.15), Theme.accent.with-alpha(0.05)) : self.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
 
-                        animate _drop-shadow-blur {
-                            duration: Theme.transition_fast;
-                            easing: ease;
-                        }
+                            animate x {
+                                easing: ease;
+                                duration: Theme.transition_fast;
+                            }
 
-                        VerticalLayout {
-                            width: 12px;
-                            alignment: center;
+                            animate drop-shadow-blur {
+                                duration: Theme.transition_fast;
+                                easing: ease;
+                            }
 
-                            Image {
+                            VerticalLayout {
                                 width: 12px;
-                                height: self.width;
-                                source: Icons.arrowRight;
-                                colorize: Theme.text_tertiary;
+                                alignment: center;
+
+                                Image {
+                                    width: 12px;
+                                    height: self.width;
+                                    source: Icons.arrowRight;
+                                    colorize: Theme.text_tertiary;
+                                }
                             }
                         }
                     }
@@ -180,7 +183,7 @@ export component DashboardPage inherits Flickable {
         //===============================
         // Available Cleaner Section
         //===============================
-        c := Card {
+        Card {
 
             CardHeader {
                 title: "Available Cleaners";
@@ -199,18 +202,21 @@ export component DashboardPage inherits Flickable {
                 GridBox {
                     width: 100%;
 
-                    for cleaner[i] in CleanerGlobal.cleaners: RectCard {
-                        title: cleaner.name;
-                        source: cleaner.icon;
-                        _x: self.has-hover ? 4px : 0px;
-                        description: cleaner.description;
+                    for cleaner[i] in CleanerGlobal.cleaners: VerticalLayout {
                         row: Math.floor(i / plugin_per_row);
-                        max-width: plugin-min-max-width.max;
-                        // min-width: plugin-min-max-width.min;
+                        min-width: plugin-min-max-width.min;
 
-                        animate _x {
-                            easing: ease;
-                            duration: Theme.transition_fast;
+                        RectCard {
+                            title: cleaner.name;
+                            source: cleaner.icon;
+                            x: self.has-hover ? 4px : 0px;
+                            description: cleaner.description;
+                            max-width: plugin-min-max-width.max;
+
+                            animate x {
+                                easing: ease;
+                                duration: Theme.transition_fast;
+                            }
                         }
                     }
                 }

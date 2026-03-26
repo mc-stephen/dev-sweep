@@ -1,3 +1,28 @@
-export component ScanAndCleanPage {
-    
+import { Scanning } from "./phase/scanning/scanning.slint";
+import { Cleaning } from "./phase/cleaning/cleaning.slint";
+import { StartScan } from "./phase/start_scan/start_scan.slint";
+import { StartClean } from "./phase/start_clean/start_clean.slint";
+
+export component ScanAndCleanPage inherits VerticalLayout {
+    in-out property <int> current_state: 2;
+
+    if current_state == 0:  StartScan {
+        on_start_scan(val) => {
+            if (val) {
+                current_state = 1;
+            }
+        }
+    }
+
+    if current_state == 1:   Scanning {
+        on_finished(val) => {
+            if (val) {
+                current_state = 2;
+            }
+        }
+    }
+
+    if current_state == 2:   StartClean { }
+
+    if current_state == 3:   Cleaning { }
 }

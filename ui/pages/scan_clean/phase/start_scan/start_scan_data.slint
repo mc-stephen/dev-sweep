@@ -1,0 +1,37 @@
+import { Icons } from "../../../../services/icons.slint";
+
+export struct Option {
+    icon: image,
+    value: string,
+    label: string,
+    selected: bool,
+}
+
+export global StartScanData {
+    in-out property <[Option]> options: [
+        {
+            value: "",
+            selected: false,
+            icon: Icons.flow-chart,
+            label: "Deep scan",
+        },
+        {
+            value: "",
+            selected: false,
+            icon: Icons.shield,
+            label: "Safe only",
+        },
+        {
+            value: "",
+            selected: false,
+            label: "Dry run",
+            icon: Icons.eye,
+        },
+        {
+            value: "",
+            selected: false,
+            icon: Icons.blind,
+            label: "Hidden dirs",
+        },
+    ];
+}

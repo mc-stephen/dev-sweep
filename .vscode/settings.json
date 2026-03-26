@@ -4,6 +4,7 @@
         "rgba",
         "slint",
         "topbar",
+        "viewbox",
         "winit"
     ]
 }

@@ -1,9 +1,5 @@
-export enum LogStatus {
-    Info,
-    Danger,
-    Warning,
-    Success,
-}
+import { GroupedOptionData } from "../../components/grouped_option.slint";
+import { LogEntry, LogStatus } from "../../components/terminal_log.slint";
 
 export enum FilterBy {
     All,
@@ -13,73 +9,43 @@ export enum FilterBy {
     Plugins,
 }
 
-export struct LogEntry {
-    message: string,
-    status: LogStatus,
-    timestamp: string,
-}
-
-export struct FilterList {
-    label: string,
-    value: FilterBy,
-}
-
 export global ActivityLogData {
     in-out property <FilterBy> filter_by: FilterBy.All;
-    in property <[FilterList]> filter_list: [
+
+    in property <[GroupedOptionData]> filter_list: [
         {
             label: "All",
-            value: FilterBy.All,
+            value: filterToString(FilterBy.All),
         },
         {
             label: "Scans",
-            value: FilterBy.Scans,
+            value: filterToString(FilterBy.Scans),
         },
         {
             label: "Cleans",
-            value: FilterBy.Cleans,
+            value: filterToString(FilterBy.Cleans),
         },
         {
             label: "Settings",
-            value: FilterBy.Settings,
+            value: filterToString(FilterBy.Settings),
         },
         {
             label: "Plugins",
-            value: FilterBy.Plugins,
+            value: filterToString(FilterBy.Plugins),
         },
     ];
 
     in-out property <[LogEntry]> logs: [
         { message: "System initialized", timestamp: "00:00:01", status: LogStatus.Info },
         { message: "User login successful", timestamp: "00:00:15", status: LogStatus.Success },
-        // {
-        //     message: "Warning: High memory usage",
-        //     timestamp: "00:01:20",
-        //     status: LogStatus.Warning
-        // },
         { message: "Failed to fetch API data", timestamp: "00:02:05", status: LogStatus.Danger },
         { message: "Cache cleared", timestamp: "00:02:50", status: LogStatus.Info },
         { message: "New message received", timestamp: "00:03:30", status: LogStatus.Info },
-        // {
-        //     message: "Database connection established",
-        //     timestamp: "00:04:12",
-        //     status: LogStatus.Success
-        // },
         { message: "Disk space low", timestamp: "00:05:00", status: LogStatus.Warning },
         { message: "User logout", timestamp: "00:05:45", status: LogStatus.Info },
         { message: "Failed login attempt", timestamp: "00:06:10", status: LogStatus.Danger },
         { message: "Background job started", timestamp: "00:06:55", status: LogStatus.Info },
-        // {
-        //     message: "Background job completed",
-        //     timestamp: "00:07:40",
-        //     status: LogStatus.Success
-        // },
         { message: "Configuration updated", timestamp: "00:08:20", status: LogStatus.Info },
-        // {
-        //     message: "Warning: CPU temperature high",
-        //     timestamp: "00:09:05",
-        //     status: LogStatus.Warning
-        // },
         { message: "API response delayed", timestamp: "00:09:50", status: LogStatus.Warning },
         { message: "Payment processed", timestamp: "00:10:30", status: LogStatus.Success },
         { message: "Failed to send email", timestamp: "00:11:15", status: LogStatus.Danger },
@@ -87,22 +53,7 @@ export global ActivityLogData {
         { message: "Session expired", timestamp: "00:12:45", status: LogStatus.Warning },
         { message: "User password changed", timestamp: "00:13:30", status: LogStatus.Success },
         { message: "Error parsing JSON", timestamp: "00:14:10", status: LogStatus.Danger },
-        // {
-        //     message: "System health check passed",
-        //     timestamp: "00:14:55",
-        //     status: LogStatus.Success
-        // },
         { message: "Temporary files cleaned", timestamp: "00:15:40", status: LogStatus.Info },
-        // {
-        //     message: "Warning: Network latency high",
-        //     timestamp: "00:16:20",
-        //     status: LogStatus.Warning
-        // },
-        // {
-        //     message: "Critical service restarted",
-        //     timestamp: "00:17:00",
-        //     status: LogStatus.Danger
-        // },
         { message: "New comment added", timestamp: "00:17:45", status: LogStatus.Info },
         { message: "Email verified", timestamp: "00:18:30", status: LogStatus.Success },
         { message: "Warning: Low battery", timestamp: "00:19:10", status: LogStatus.Warning },
@@ -110,58 +61,26 @@ export global ActivityLogData {
         { message: "Failed to load resource", timestamp: "00:20:40", status: LogStatus.Danger },
         { message: "Notification sent", timestamp: "00:21:20", status: LogStatus.Info },
         { message: "User profile updated", timestamp: "00:22:05", status: LogStatus.Success },
-        // {
-        //     message: "Warning: Deprecated API used",
-        //     timestamp: "00:22:50",
-        //     status: LogStatus.Warning
-        // },
         { message: "Payment failed", timestamp: "00:23:30", status: LogStatus.Danger },
         { message: "Session restored", timestamp: "00:24:10", status: LogStatus.Success },
         { message: "Backup completed", timestamp: "00:24:55", status: LogStatus.Success },
-        // {
-        //     message: "Warning: High traffic detected",
-        //     timestamp: "00:25:40",
-        //     status: LogStatus.Warning
-        // },
         { message: "Server restarted", timestamp: "00:26:20", status: LogStatus.Danger },
         { message: "New chat message", timestamp: "00:27:00", status: LogStatus.Info },
-        // {
-        //     message: "Database migration applied",
-        //     timestamp: "00:27:45",
-        //     status: LogStatus.Success
-        // },
-        // {
-        //     message: "Warning: Slow response time",
-        //     timestamp: "00:28:30",
-        //     status: LogStatus.Warning
-        // },
         { message: "File deleted", timestamp: "00:29:10", status: LogStatus.Info },
         { message: "Error writing to log", timestamp: "00:29:55", status: LogStatus.Danger },
         { message: "User settings saved", timestamp: "00:30:40", status: LogStatus.Success },
-        // {
-        //     message: "Warning: Unauthorized access attempt",
-        //     timestamp: "00:31:20",
-        //     status: LogStatus.Warning
-        // },
         { message: "API request successful", timestamp: "00:32:00", status: LogStatus.Success },
-        // {
-        //     message: "Error connecting to server",
-        //     timestamp: "00:32:45",
-        //     status: LogStatus.Danger
-        // },
         { message: "Cache updated", timestamp: "00:33:30", status: LogStatus.Info },
-        // {
-        //     message: "Warning: Memory leak suspected",
-        //     timestamp: "00:34:10",
-        //     status: LogStatus.Warning
-        // },
         { message: "Data exported", timestamp: "00:34:55", status: LogStatus.Success },
         { message: "Failed to delete record", timestamp: "00:35:40", status: LogStatus.Danger },
         { message: "User session cleared", timestamp: "00:36:20", status: LogStatus.Info },
-        // {
-        //     message: "System shutdown initiated",
-        //     timestamp: "00:37:00",
-        //     status: LogStatus.Danger
-        // }
     ];
+
+    pure public function filterToString(f: FilterBy) -> string {
+        return f == FilterBy.All ? "All" : f == FilterBy.Scans ? "Scans" : f == FilterBy.Cleans ? "Cleans" : f == FilterBy.Settings ? "Settings" : "Plugins";
     }
+
+    pure public function stringToFilter(s: string) -> FilterBy {
+        return s == "All" ? FilterBy.All : s == "Scans" ? FilterBy.Scans : s == "Cleans" ? FilterBy.Cleans : s == "Settings" ? FilterBy.Settings : FilterBy.Plugins;
+    }
+}

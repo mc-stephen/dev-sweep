@@ -1,0 +1,102 @@
+import { Theme } from "../theme/theme.slint";
+import { ScrollView } from "std-widgets.slint";
+
+export enum LogStatus {
+    Info,
+    Danger,
+    Warning,
+    Success,
+}
+
+export struct LogEntry {
+    message: string,
+    status: LogStatus,
+    timestamp: string,
+}
+
+export component TerminalLog inherits Rectangle {
+    in property <[LogEntry]> logs;
+
+    border-width: 1px;
+    background: Theme.bg_primary;
+    border-radius: Theme.radius_md;
+    border-color: Theme.border_primary;
+
+    ScrollView {
+        vertical-stretch: 1;
+
+        VerticalLayout {
+            padding: 15px;
+            spacing: 10px;
+
+            for data[i] in logs: HorizontalLayout {
+                spacing: 10px;
+                alignment: start;
+
+                timestamp := Text {
+                    y: 2.5px;
+                    font-size: 0.9rem;
+                    text: data.timestamp;
+                    color: Theme.text_tertiary;
+                }
+
+                HorizontalLayout {
+                    width: 0.7rem * 7;
+
+                    Rectangle {
+                        // width: 50px;
+                        width: status.width + 10px;
+                        height: status.height + 5px;
+                        border-radius: self.height * Theme.radius_full;
+                        background: {
+                            if data.status == LogStatus.Info {
+                                Theme.info.transparentize(0.8)
+                            } else if data.status == LogStatus.Success {
+                                Theme.success.transparentize(0.8)
+                            } else if data.status == LogStatus.Warning {
+                                Theme.warning.transparentize(0.8)
+                            } else {
+                                Theme.danger.transparentize(0.8)
+                            }
+                        };
+                        status := Text {
+                            y: 4px;
+                            font-weight: 600;
+                            font-size: 0.7rem;
+                            color: {
+                                if data.status == LogStatus.Info {
+                                    Theme.info
+                                } else if data.status == LogStatus.Success {
+                                    Theme.success
+                                } else if data.status == LogStatus.Warning {
+                                    Theme.warning
+                                } else {
+                                    Theme.danger
+                                }
+                            };
+                            text: {
+                                if data.status == LogStatus.Info {
+                                    "INFO"
+                                } else if data.status == LogStatus.Success {
+                                    "SUCCESS"
+                                } else if data.status == LogStatus.Warning {
+                                    "WARNING"
+                                } else {
+                                    "DANGER"
+                                }
+                            };
+                        }
+                    }
+                }
+
+                message := Text {
+                    y: 2.5px;
+                    wrap: word-wrap;
+                    font-size: 0.9rem;
+                    text: data.message;
+                    color: Theme.text_secondary;
+                }
+            }
+        }
+    }
+}

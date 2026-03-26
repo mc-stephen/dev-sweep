@@ -3,9 +3,11 @@ import { Theme } from "../../theme/theme.slint";
 export component TextIconButton inherits Rectangle {
     in property <string> text;
     in property <image> source;
+    in property <int> font-weight: 550;
     in property <length> icon_size: 14px;
     in property <color> icon_color: white;
     in property <color> text_color: white;
+    in property <length> font-size: 0.9rem;
     in property <bool> has-hover: ta.has-hover;
     in property <length> horizontal-padding: 10px;
 
@@ -34,9 +36,9 @@ export component TextIconButton inherits Rectangle {
         Text {
             y: 1px;
             text: text;
-            font-weight: 550;
             color: text_color;
-            font-size: 0.9rem;
+            font-size: font-size;
+            font-weight: font-weight;
             vertical-alignment: center;
         }
     }
