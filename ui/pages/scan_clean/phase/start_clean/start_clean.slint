@@ -1,4 +1,247 @@
 
+import { Theme } from "../../../../theme/theme.slint";
+import { StartCleanData } from "start_clean_data.slint";
+import { Icons } from "../../../../services/icons.slint";
+import { MyCheckBox } from "../../../../components/check_box.slint";
+import { RectCard } from "../../../../components/cards/rect_card.slint";
+import { GroupedOption } from "../../../../components/grouped_option.slint";
+import {
+    VerticalDivider,
+} from "../../../../components/divider/vertical_divider.slint";
+import {
+    TextIconButton,
+} from "../../../../components/buttons/text_icon_button.slint";
+import {
+    HorizontalDivider,
+} from "../../../../components/divider/horizontal_divider.slint";
+
 export component StartClean inherits VerticalLayout {
-    //
- }
+
+    callback re_scan();
+    callback start_clean();
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    HorizontalLayout {
+        spacing: 50px;
+        padding: 15px;
+        alignment: space-between;
+
+        HorizontalLayout {
+            spacing: 15px;
+
+            VerticalLayout {
+                spacing: 3px;
+                alignment: center;
+
+                Text {
+                    text: "6";
+                    font-size: 2rem;
+                    font-weight: 800;
+                    color: Theme.text_primary;
+                }
+
+                Text {
+                    font-size: 0.78rem;
+                    text: "projects found";
+                    color: Theme.text_tertiary;
+                }
+            }
+
+            VerticalDivider {
+                height_size: 40px;
+            }
+
+            VerticalLayout {
+                spacing: 3px;
+                alignment: center;
+
+                Text {
+                    text: "30.7 GB";
+                    font-size: 2rem;
+                    font-weight: 800;
+                    color: Theme.accent_light;
+                }
+
+                Text {
+                    font-size: 0.78rem;
+                    text: "recoverable";
+                    color: Theme.text_tertiary;
+                }
+            }
+        }
+
+        HorizontalLayout {
+            spacing: 10px;
+
+            VerticalLayout {
+                alignment: center;
+
+                TextIconButton {
+                    height: 30px;
+                    text: "Rescan";
+                    icon_size: 12px;
+                    font-weight: 400;
+                    border-width: 1px;
+                    clicked => re_scan();
+                    source: Icons.recent;
+                    background: transparent;
+                    border-radius: self.height / 2;
+                    border-color: self.has-hover ? Theme.accent : Theme.border_secondary;
+                    icon_color: self.has-hover ? Theme.accent_light : Theme.text_secondary;
+                    text_color: self.has-hover ? Theme.accent_light : Theme.text_secondary;
+                }
+            }
+
+            VerticalLayout {
+                alignment: center;
+
+                TextIconButton {
+                    icon_size: 10px;
+                    border-width: 1px;
+                    source: Icons.appIcon;
+                    text: "Clean Selected";
+                    clicked => start_clean();
+                    border-color: Theme.accent;
+                    border-radius: self.height / 2;
+                    background: @linear-gradient(120deg, Theme.accent_light, Theme.accent_dark);
+
+                    VerticalLayout {
+                        alignment: center;
+
+                        Rectangle {
+                            width: 15px;
+                            height: self.width;
+                            border-radius: self.height / 2;
+                            background: Theme.accent_light.with-alpha(0.3);
+
+                            Text {
+                                font-size: 10px;
+                                font-weight: 600;
+                                text: StartCleanData.selected_proj.length;
+                                y: (parent.height / 2) - (self.height / 2) + 1px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Rectangle {
+        height: 50px;
+        background: Theme.bg_secondary;
+
+        VerticalLayout {
+            alignment: space-between;
+
+            HorizontalDivider { }
+
+            HorizontalLayout {
+                spacing: 50px;
+                padding-left: 15px;
+                padding-right: 15px;
+                alignment: space-between;
+
+                VerticalLayout {
+                    alignment: center;
+
+                    GroupedOption {
+                        data: StartCleanData.projects_filters;
+                        selected: StartCleanData.filter_proj_by;
+                        clicked(val) => {
+                            StartCleanData.filter_proj_by = val;
+                        }
+                    }
+                }
+
+                HorizontalLayout {
+                    spacing: 5px;
+
+                    TextIconButton {
+                        height: 30px;
+                        font-size: 10px;
+                        icon_size: 12px;
+                        font-weight: 400;
+                        border-width: 1px;
+                        text: "Select All";
+                        background: Theme.bg_card;
+                        source: Icons.AvailableCleaners;
+                        border-color: self.has-hover ? Theme.accent : Theme.border_secondary;
+                        icon_color: self.has-hover ? Theme.accent_light : Theme.text_secondary;
+                        text_color: self.has-hover ? Theme.accent_light : Theme.text_secondary;
+                    }
+
+                    TextIconButton {
+                        height: 30px;
+                        text: "Clear";
+                        icon_size: 12px;
+                        font-size: 10px;
+                        font-weight: 400;
+                        border-width: 1px;
+                        background: Theme.bg_card;
+                        source: Icons.AvailableCleaners;
+                        border-color: self.has-hover ? Theme.accent : Theme.border_secondary;
+                        icon_color: self.has-hover ? Theme.accent_light : Theme.text_secondary;
+                        text_color: self.has-hover ? Theme.accent_light : Theme.text_secondary;
+                    }
+                }
+            }
+
+            HorizontalDivider { }
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Flickable {
+
+        VerticalLayout {
+            spacing: 5px;
+            padding: 15px;
+
+            for project[i] in 50: HorizontalLayout {
+                height: 45px;
+                spacing: 10px;
+
+                VerticalLayout {
+                    alignment: center;
+
+                    proj_checked_box := MyCheckBox {
+                        toggled(val) => {
+                            //
+                        }
+                    }
+                }
+
+                RectCard {
+                    title: "puzzle-game";
+                    height: parent.height;
+                    description: "~/code/puzzle-game";
+                    background: proj_checked_box.checked ? Theme.bg_primary : Theme.bg_secondary;
+                    border-color: proj_checked_box.checked ? Theme.accent : Theme.border_primary;
+                    clicked => {
+                        proj_checked_box.checked = !proj_checked_box.checked;
+                    }
+
+                    VerticalLayout {
+                        spacing: 3px;
+                        alignment: center;
+
+                        Text {
+                            text: "119.6 MB";
+                            font-weight: 600;
+                            font-size: 0.85rem;
+                            color: Theme.warning;
+                        }
+
+                        Text {
+                            text: "6 targets";
+                            font-size: 0.7rem;
+                            color: Theme.text_tertiary;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

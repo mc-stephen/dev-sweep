@@ -1,3 +1,30 @@
+import { GroupedOptionData } from "../../../../components/grouped_option.slint";
+
 export global StartCleanData {
-    //
+    in-out property <[string]> selected_proj: ["",""];
+
+    // For Filtering
+    in-out property <string> filter_proj_by: projects_filters[0].value;
+    in-out property <[GroupedOptionData]> projects_filters: [
+        {
+            label: "All",
+            value: "all",
+        },
+        {
+            label: ".NET / C#",
+            value: ".net",
+        },
+        {
+            label: "Javascript",
+            value: "js",
+        },
+        {
+            label: "Rust",
+            value: "rs",
+        },
+        {
+            label: "Kotlin",
+            value: "kt",
+        },
+    ];
 }

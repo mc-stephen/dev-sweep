@@ -5,7 +5,6 @@ import { QuickAction } from "../../pages/dashboard/dashboard_data.slint";
 
 export component RectCard inherits Rectangle {
     callback clicked();
-
     
     in property <brush> colorize: Theme.accent;
     in property <brush> source_bg: Theme.bg_card;
@@ -43,9 +42,9 @@ export component RectCard inherits Rectangle {
 
             Rectangle {
                 clip: true;
-                width: 36px;
                 height: self.width;
                 background: source_bg;
+                width: root.height * 0.7;
                 border-radius: Theme.radius_md;
 
                 Image {

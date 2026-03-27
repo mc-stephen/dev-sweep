@@ -22,7 +22,14 @@ export component ScanAndCleanPage inherits VerticalLayout {
         }
     }
 
-    if current_state == 2:   StartClean { }
+    if current_state == 2:   StartClean {
+        re-scan => {
+            current_state = 0;
+        }
+        start-clean => {
+            current_state = 3;
+        }
+    }
 
     if current_state == 3:   Cleaning { }
 }
