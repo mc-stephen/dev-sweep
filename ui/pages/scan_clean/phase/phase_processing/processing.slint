@@ -1,5 +1,6 @@
 import { Theme } from "../../../../theme/theme.slint";
 import { Icons } from "../../../../services/icons.slint";
+import { ScanCleanPhase } from "../../scan_clean_data.slint";
 import { TerminalLog } from "../../../../components/terminal_log.slint";
 import { ActivityLogData } from "../../../activity_log/activity_log_data.slint";
 
@@ -80,8 +81,8 @@ export component OrbitalProgress inherits Rectangle {
     }
 }
 
-export component Scanning inherits VerticalLayout {
-    callback on_finished(bool);
+export component PhaseProcessing inherits VerticalLayout {
+    callback on_finished(ScanCleanPhase);
 
     spacing: 10px;
     padding: 15px;

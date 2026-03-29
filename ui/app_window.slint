@@ -7,6 +7,7 @@ import { SettingsPage } from "pages/settings/settings.slint";
 import { ToggleSwitch } from "components/toggle_switch.slint";
 import { TextField } from "components/inputs/text_field.slint";
 import { DashboardPage } from "pages/dashboard/dashboard.slint";
+import { AppWindowData, TabPages } from "./app_window_data.slint";
 import { IconButton } from "components/buttons/icon_button.slint";
 import { ScanAndCleanPage } from "pages/scan_clean/scan_clean.slint";
 import { ActivityLogPage } from "pages/activity_log/activity_log.slint";
@@ -17,7 +18,6 @@ import { HorizontalDivider } from "components/divider/horizontal_divider.slint";
 import {
     WindowControl,
 } from "./components/window_control/global_logic/window_control_logic.slint";
-export { WindowControl }
 import {
     Button,
     VerticalBox,
@@ -27,13 +27,17 @@ import {
     Switch,
 } from "std-widgets.slint";
 
+export { WindowControl, AppWindowData }
+export { CleanerGlobal, Cleaner, CleanTarget, CleanDetect, PathType } from "./global/cleaner_global.slint";
+
+
 //======================================
 // Tab
 //======================================
  component Tab inherits Rectangle {
 
-    callback on_route(int);
-    in-out property <int> active-page;
+    callback on_route(TabPages);
+    in-out property <TabPages> active_page;
 
     min-height: 700px;
     width: Theme.sidebar_width;
@@ -104,17 +108,17 @@ import {
             vertical-stretch: 1;
 
             for item[index] in [
-                { text: "Dashboard", icon: Icons.dashboard },
-                { text: "Scan & Clean", icon: Icons.search },
-                { text: "Cleaners", icon: Icons.puzzle },
-                { text: "Activity", icon: Icons.terminal },
-                { text: "Settings", icon: Icons.settings }
+                { text: "Dashboard", icon: Icons.dashboard, page: TabPages.Dashboard },
+                { text: "Scan & Clean", icon: Icons.search, page: TabPages.ScanClean },
+                { text: "Cleaners", icon: Icons.puzzle, page: TabPages.Cleaners },
+                { text: "Activity", icon: Icons.terminal, page: TabPages.Activity },
+                { text: "Settings", icon: Icons.settings, page: TabPages.Settings }
             ]: NavItem {
                 height: 37px;
                 text: item.text;
                 icon: item.icon;
-                clicked => on_route(index);
-                active: root.active-page == index;
+                clicked => on_route(item.page);
+                active: root.active_page == item.page;
             }
         }
 
@@ -237,6 +241,9 @@ component BodyHeader inherits Rectangle {
 
                     IconButton {
                         icon: Icons.bolt;
+                        clicked => {
+                            AppWindowData.active-page = TabPages.ScanClean;
+                        }
                     }
                 }
             }
@@ -332,20 +339,13 @@ component Toast inherits VerticalLayout {
 // 
 //======================================
 export component AppWindow inherits Window {
-    callback start_system_move();
-
-    in-out property <int> active-page: 0;
-
-    out property <length> card_width: c.width;
-    out property <length> card_height: c.height;
-
     no-frame: true;
     preferred-width: 1000px;
     preferred-height: 600px;
     background: transparent;
     resize-border-width: 5px;
 
-    c := Rectangle {
+    Rectangle {
         clip: true;
         width: 100%;
         height: 100%;
@@ -360,9 +360,9 @@ export component AppWindow inherits Window {
             // Body
             //================================
             Tab {
-                active-page: root.active-page;
-                on_route(index) => {
-                    root.active-page = index;
+                active-page: AppWindowData.active_page;
+                on_route(page) => {
+                    AppWindowData.active_page = page;
                 }
             }
 
@@ -371,19 +371,19 @@ export component AppWindow inherits Window {
             //================================
             VerticalLayout {
                 vertical-stretch: 1;
-                alignment: root.active-page == 1 || root.active-page == 2 || root.active-page == 3 ? stretch : start;
+                alignment: AppWindowData.active-page == TabPages.ScanClean || AppWindowData.active-page == TabPages.Cleaners || AppWindowData.active-page == TabPages.Activity ? stretch : start;
 
                 BodyHeader {
-                    start_drag => root.start_system_move();
-                    title: root.active-page == 0 ? "Dashboard" : root.active-page == 1 ? "Scan & Clean" : root.active-page == 2 ? "Cleaners" : root.active-page == 3 ? "Activity" : "Settings";
+                    title: AppWindowData.page_title;
+                    start_drag => AppWindowData.start_system_move();
                 }
 
                 // Where the (pages) will be rendered
-                if root.active-page == 0: DashboardPage { }
-                if root.active-page == 1: ScanAndCleanPage { }
-                if root.active-page == 2: CleanersPage { }
-                if root.active-page == 3: ActivityLogPage { }
-                if root.active-page == 4: SettingsPage { }
+                if AppWindowData.active-page == TabPages.Dashboard: DashboardPage { }
+                if AppWindowData.active-page == TabPages.ScanClean: ScanAndCleanPage { }
+                if AppWindowData.active-page == TabPages.Cleaners: CleanersPage { }
+                if AppWindowData.active-page == TabPages.Activity: ActivityLogPage { }
+                if AppWindowData.active-page == TabPages.Settings: SettingsPage { }
             }
         }
 

@@ -5,20 +5,17 @@ export enum PathType{
     Folder
 }
 
-export enum RiskLevel{
-    Safe,
-    Unsafe
-}
-
 export struct CleanDetect {
-    name: string,
+    path: string,
+    label: string,
     type: PathType,
 }
 
 export struct CleanTarget {
-    name: string,
+    safe: bool,
+    path: string,
+    label: string,
     type: PathType,
-    riskLevel: RiskLevel,
 }
 
 export struct Cleaner {
@@ -28,9 +25,10 @@ export struct Cleaner {
     color: color,
     description: string,
     detect: [CleanDetect],
-    targets: [CleanTarget],
+    clean_command: string,
     restore_command: string,
     estimated_savings: string,
+    clean_targets: [CleanTarget],
 }
 
 export global CleanerGlobal {
@@ -45,33 +43,39 @@ export global CleanerGlobal {
             description: "Describe what this cleaner does",
             detect:[
                 {
-                    name: "pubspec.yaml",
+                    label: "",
+                    path: "pubspec.yaml",
                     type: PathType.File,
                 },
                 {
-                    name: ".dart_tool",
+                    label: "",
+                    path: ".dart_tool",
                     type: PathType.Folder,
                 },
                 {
-                    name: "build",
+                    label: "",
+                    path: "build",
                     type: PathType.Folder,
                 },
             ],
-            targets: [
+            clean_targets: [
                 {
-                    name: "ios/ Pods",
+                    label: "",
+                    safe: true,
+                    path: "ios/ Pods",
                     type: PathType.Folder,
-                    riskLevel: RiskLevel.Safe,
                 },
                 {
-                    name: ".packages",
+                    label: "",
+                    safe: false,
+                    path: ".packages",
                     type: PathType.File,
-                    riskLevel: RiskLevel.Unsafe,
                 },
                 {
-                    name: "ios/ .symlinks",
+                    label: "",
+                    safe: true,
+                    path: "ios/ .symlinks",
                     type: PathType.Folder,
-                    riskLevel: RiskLevel.Safe,
                 }
             ],
         }

@@ -1,0 +1,20 @@
+{
+  "id": "nextjs",
+  "name": "Next.js",
+  "icon": "fas fa-terminal",
+  "color": "#000000",
+  "description": "Next.js optimized build output and cache",
+  "estimated_savings": "100MB - 1GB",
+  "detect": [
+    { "label": "Next Config", "path": "next.config.js", "type": "file" }
+  ],
+  "clean_targets": [
+    {
+      "safe": true,
+      "path": ".next",
+      "type": "folder",
+      "label": "Next Build Cache"
+    },
+    { "safe": true, "path": "out", "type": "folder", "label": "Static Export" }
+  ]
+}

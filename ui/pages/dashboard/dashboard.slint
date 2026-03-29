@@ -202,15 +202,19 @@ export component DashboardPage inherits Flickable {
                 GridBox {
                     width: 100%;
 
-                    for cleaner[i] in CleanerGlobal.cleaners: VerticalLayout {
+                    // for cleaner[i] in CleanerGlobal.cleaners: VerticalLayout {
+                    for cleaner[i] in 15: VerticalLayout {
                         row: Math.floor(i / plugin_per_row);
                         min-width: plugin-min-max-width.min;
 
                         RectCard {
-                            title: cleaner.name;
-                            source: cleaner.icon;
+                            // title: cleaner.name;
+                            title: "cleaner.name";
+                            // source: cleaner.icon;
+                            source: Icons.search;
                             x: self.has-hover ? 4px : 0px;
-                            description: cleaner.description;
+                            // description: cleaner.description;
+                            description: "cleaner.description";
                             max-width: plugin-min-max-width.max;
 
                             animate x {

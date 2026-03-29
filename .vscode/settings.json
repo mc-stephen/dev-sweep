@@ -1,7 +1,9 @@
 {
     "cSpell.words": [
+        "argb",
         "Flickable",
         "rgba",
+        "serde",
         "slint",
         "topbar",
         "viewbox",

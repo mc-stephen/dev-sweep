@@ -1,0 +1,41 @@
+export component LoadingSpinner inherits Rectangle {
+    in property <brush> stroke-color: #3498db;
+    in property <length> stroke-width: 2px;
+    in property <duration> rotation-speed: 1s;
+    
+    property <angle> angle: 0deg;
+
+    width: 30px;
+    height: 30px;
+
+    animate angle {
+        duration: rotation-speed;
+        iteration-count: -1;
+        // Linear easing makes the rotation constant and smooth
+        easing: linear;
+    }
+
+    init => {
+        angle = 360deg;
+    }
+
+    // The container must be the same size as the root to rotate around center
+    Image {
+        width: parent.width;
+        height: parent.height;
+        transform-rotation: root.angle;
+
+        Path {
+            width: 100%;
+            height: 100%;
+            stroke: root.stroke-color;
+            stroke-width: root.stroke-width;
+            
+            // This defines an arc from 12 o'clock to 9 o'clock (270 degrees)
+            // Centered in a 100x100 viewbox
+            commands: "M 50 10 A 40 40 0 1 1 10 50";
+            viewbox-width: 100;
+            viewbox-height: 100;
+        }
+    }
+}

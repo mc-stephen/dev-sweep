@@ -1,0 +1,16 @@
+export enum TabPages {
+    Dashboard,
+    ScanClean,
+    Cleaners,
+    Activity,
+    Settings,
+}
+
+export global AppWindowData {
+    callback start_system_move();
+
+    in-out property <TabPages> active_page: TabPages.Dashboard;
+    in-out property <string> page_title: AppWindowData.active-page == TabPages.Dashboard ? "Dashboard" : AppWindowData.active-page == TabPages.ScanClean ? "Scan & Clean" : AppWindowData.active-page == TabPages.Cleaners ? "Cleaners" : AppWindowData.active-page == TabPages.Activity ? "Activity" : "Settings";
+    // out property <length> card_width: c.width;
+    // out property <length> card_height: c.height;
+}

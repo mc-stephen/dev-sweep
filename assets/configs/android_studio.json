@@ -1,0 +1,27 @@
+{
+  "id": "android-studio",
+  "name": "Android Studio",
+  "icon": "fab fa-android",
+  "color": "#3DDC84",
+  "description": "Gradle build artifacts and local reports",
+  "clean_command": "./gradlew clean",
+  "estimated_savings": "300MB - 3GB",
+  "detect": [
+    { "label": "Gradle Wrapper", "path": "gradlew", "type": "file" },
+    { "label": "Build Gradle", "path": "build.gradle", "type": "file" }
+  ],
+  "clean_targets": [
+    {
+      "safe": true,
+      "path": "build",
+      "type": "folder",
+      "label": "Gradle Build"
+    },
+    {
+      "safe": false,
+      "path": ".gradle",
+      "type": "folder",
+      "label": "Local Gradle Cache"
+    }
+  ]
+}

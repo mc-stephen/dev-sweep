@@ -1,5 +1,6 @@
 // ADD THIS: Import from the crate root where they were generated
-use crate::{AppWindow, WindowControl};
+use crate::{AppWindow, AppWindowData, WindowControl};
+
 use i_slint_backend_winit::WinitWindowAccessor;
 use slint::ComponentHandle;
 
@@ -11,7 +12,7 @@ pub struct WindowManagement {
 impl WindowManagement {
     pub fn setup_callbacks(&self) {
         // --- Drag Window ---
-        self.window.on_start_system_move({
+        self.window.global::<AppWindowData>().on_start_system_move({
             let ui_handle: slint::Weak<AppWindow> = self.ui_handle.clone();
             move || {
                 if let Some(ui) = ui_handle.upgrade() {

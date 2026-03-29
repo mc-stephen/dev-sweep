@@ -1,35 +1,42 @@
-import { Scanning } from "./phase/scanning/scanning.slint";
-import { Cleaning } from "./phase/cleaning/cleaning.slint";
 import { StartScan } from "./phase/start_scan/start_scan.slint";
 import { StartClean } from "./phase/start_clean/start_clean.slint";
+import { PhaseProcessing } from "./phase/phase_processing/processing.slint";
+import { ScanAndCleanPageData, ScanCleanPhase } from "scan_clean_data.slint";
+import {
+    CleanSuccessfulPhase,
+} from "./phase/successful/clean_successful.slint";
 
 export component ScanAndCleanPage inherits VerticalLayout {
-    in-out property <int> current_state: 2;
 
-    if current_state == 0:  StartScan {
+    if ScanAndCleanPageData.current_phase == ScanCleanPhase.StartScan:  StartScan {
         on_start_scan(val) => {
             if (val) {
-                current_state = 1;
+                ScanAndCleanPageData.current_phase = ScanCleanPhase.ProcessingPhase;
             }
         }
     }
 
-    if current_state == 1:   Scanning {
-        on_finished(val) => {
-            if (val) {
-                current_state = 2;
-            }
+    if ScanAndCleanPageData.current_phase == ScanCleanPhase.StartClean:   StartClean {
+        re_scan => {
+            ScanAndCleanPageData.current_phase = ScanCleanPhase.StartScan;
+        }
+        start_clean => {
+            ScanAndCleanPageData.current_phase = ScanCleanPhase.StartClean;
         }
     }
 
-    if current_state == 2:   StartClean {
-        re-scan => {
-            current_state = 0;
-        }
-        start-clean => {
-            current_state = 3;
+    if ScanAndCleanPageData.current_phase == ScanCleanPhase.ProcessingPhase:   PhaseProcessing {
+        on_finished(nxt_phase) => {
+            ScanAndCleanPageData.current_phase = nxt_phase;
         }
     }
 
-    if current_state == 3:   Cleaning { }
+    if  ScanAndCleanPageData.current_phase == ScanCleanPhase.CleanSuccessful:   CleanSuccessfulPhase {
+        new_scan => {
+            ScanAndCleanPageData.current_phase = ScanCleanPhase.StartScan;
+        }
+        dashboard => {
+            //
+        }
+    }
 }

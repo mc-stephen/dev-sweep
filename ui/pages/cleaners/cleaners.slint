@@ -5,7 +5,10 @@ import { TextArea } from "../../components/inputs/text_area.slint";
 import { Card, CardHeader } from "../../components/cards/card.slint";
 import { TextButton } from "../../components/buttons/text_button.slint";
 import { IconButton } from "../../components/buttons/icon_button.slint";
-import { CleanerGlobal, PathType, RiskLevel } from "../../global/cleaner_global.slint";
+import {
+    CleanerGlobal,
+    PathType,
+} from "../../global/cleaner_global.slint";
 import {
     TextIconButton,
 } from "../../components/buttons/text_icon_button.slint";
@@ -222,7 +225,10 @@ component TopComponent inherits HorizontalLayout {
             source: Icons.plus;
             vertical-stretch: 0;
             text: "Create Cleaner";
-            background: @linear-gradient(135deg, Theme.accent, Theme.accent_dark);
+            background: @linear-gradient(135deg, self.has-hover ? Theme.accent_dark : Theme.accent, self.has-hover ? Theme.accent : Theme.accent_dark);
+
+            animate background { duration: 100ms; }
+
             clicked => {
                 CleanersData.show_model = true
             };
@@ -362,7 +368,7 @@ component BodyComponent inherits GridLayout {
                                 }
 
                                 file_type := Text {
-                                    text: detect.name;
+                                    text: detect.path;
                                     font-size: 0.75rem;
                                     vertical-alignment: center;
                                     color: Theme.text_secondary;
@@ -389,7 +395,7 @@ component BodyComponent inherits GridLayout {
                     padding-top: 5px;
                     padding-bottom: 10px;
 
-                    for target[i] in cleaner.targets: HorizontalLayout {
+                    for target[i] in cleaner.clean_targets: HorizontalLayout {
                         spacing: 3px;
 
                         Image {
@@ -401,7 +407,7 @@ component BodyComponent inherits GridLayout {
                         Text {
                             y: 2px;
                             font-size: 0.8rem;
-                            text: target.name;
+                            text: target.path;
                             horizontal-stretch: 1;
                             color: Theme.text_secondary;
                         }
@@ -410,7 +416,7 @@ component BodyComponent inherits GridLayout {
                             height: 14px;
                             horizontal-stretch: 0;
                             border-radius: Theme.radius_sm;
-                            background: target.riskLevel == RiskLevel.Safe ? Theme.success_bg : Theme.warning_bg;
+                            background: target.safe ? Theme.success_bg : Theme.warning_bg;
 
                             HorizontalLayout {
                                 padding-left: 3px;
@@ -420,8 +426,8 @@ component BodyComponent inherits GridLayout {
                                     y: 1px;
                                     font-size: 0.68rem;
                                     vertical-alignment: center;
-                                    text: target.riskLevel == RiskLevel.Safe ? "Safe" : "Caution";
-                                    color: target.riskLevel == RiskLevel.Safe ? Theme.success : Theme.warning;
+                                    text: target.safe ? "Safe" : "Caution";
+                                    color: target.safe ? Theme.success : Theme.warning;
                                 }
                             }
                         }

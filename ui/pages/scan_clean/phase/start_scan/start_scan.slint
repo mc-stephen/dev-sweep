@@ -1,18 +1,18 @@
+import { CheckBox } from "std-widgets.slint";
 import { Theme } from "../../../../theme/theme.slint";
+import { StartScanData } from "start_scan_data.slint";
 import { Icons } from "../../../../services/icons.slint";
+import { MyCheckBox } from "../../../../components/check_box.slint";
 import { RectCard } from "../../../../components/cards/rect_card.slint";
+import { TextField } from "../../../../components/inputs/text_field.slint";
+import { GroupedOption } from "../../../../components/grouped_option.slint";
+import { IconButton } from "../../../../components/buttons/icon_button.slint";
 import {
     HorizontalDivider,
 } from "../../../../components/divider/horizontal_divider.slint";
 import {
     TextIconButton,
 } from "../../../../components/buttons/text_icon_button.slint";
-import { CheckBox } from "std-widgets.slint";
-import { MyCheckBox } from "../../../../components/check_box.slint";
-import { TextField } from "../../../../components/inputs/text_field.slint";
-import { GroupedOption } from "../../../../components/grouped_option.slint";
-import { IconButton } from "../../../../components/buttons/icon_button.slint";
-import { StartScanData } from "start_scan_data.slint";
 
 //==========================
 // Label
@@ -76,6 +76,7 @@ export component StartScan inherits VerticalLayout {
         background: Theme.bg_card;
 
         HorizontalLayout {
+            spacing: 50px;
             padding: 10px;
             alignment: space-between;
 
@@ -248,26 +249,30 @@ export component StartScan inherits VerticalLayout {
                     padding: 10px;
                     padding-top: 0px;
 
-                    for plugin[i] in 15: RectCard {
-                        description: "";
-                        source: Icons.appIcon;
+                    for plugin[i] in 15: HorizontalLayout {
                         row: Math.floor(i / 6);
-                        source_bg: Theme.accent_light.transparentize(0.9);
-                        colorize: Theme.accent.transparentize(cb.checked ? 0 : 0.4);
-                        title_color: cb.checked ? Theme.text_primary : Theme.text_tertiary;
-                        background: cb.checked ? Theme.bg_card : self.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
-                        border-color: cb.checked ? Theme.accent : self.has-hover ? Theme.border_secondary : Theme.border_primary;
+                        // max-width: 200px;
 
-                        clicked => {
-                            cb.checked = !cb.checked;
-                        }
-
-                        VerticalLayout {
-                            alignment: center;
-
-                            cb := MyCheckBox {
-                                toggled(val) => {
-                                    //
+                        RectCard {
+                            description: "";
+                            source: Icons.appIcon;
+                            source_bg: Theme.accent_light.transparentize(0.9);
+                            colorize: Theme.accent.transparentize(cb.checked ? 0 : 0.4);
+                            title_color: cb.checked ? Theme.text_primary : Theme.text_tertiary;
+                            background: cb.checked ? Theme.bg_card : self.has-hover ? Theme.bg_elevated : Theme.bg_tertiary;
+                            border-color: cb.checked ? Theme.accent : self.has-hover ? Theme.border_secondary : Theme.border_primary;
+                    
+                            clicked => {
+                                cb.checked = !cb.checked;
+                            }
+                    
+                            VerticalLayout {
+                                alignment: center;
+                    
+                                cb := MyCheckBox {
+                                    toggled(val) => {
+                                        //
+                                    }
                                 }
                             }
                         }

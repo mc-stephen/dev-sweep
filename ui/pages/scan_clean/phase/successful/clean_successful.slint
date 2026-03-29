@@ -1,0 +1,181 @@
+
+import { Theme } from "../../../../theme/theme.slint";
+import { Icons } from "../../../../services/icons.slint";
+import { TerminalLog } from "../../../../components/terminal_log.slint";
+import { LoadingSpinner } from "../../../../components/circular_spinner.slint";
+import { ActivityLogData } from "../../../activity_log/activity_log_data.slint";
+import {
+    VerticalDivider,
+} from "../../../../components/divider/vertical_divider.slint";
+import {
+    TextIconButton,
+} from "../../../../components/buttons/text_icon_button.slint";
+
+export component CleanSuccessfulPhase inherits VerticalLayout {
+    callback new_scan();
+    callback dashboard();
+
+    spacing: 30px;
+    alignment: center;
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    HorizontalLayout {
+        alignment: center;
+
+        Rectangle {
+            height: 100px;
+            border-width: 2px;
+            width: self.height;
+            border-color: Theme.success;
+            border-radius: self.width / 2;
+
+            Image {
+                // height: self.width;
+                colorize: Theme.success;
+                width: parent.width * 0.7;
+                source: Icons.check_cloud;
+            }
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    VerticalLayout {
+        spacing: 8px;
+
+        Text {
+            font-size: 2rem;
+            font-weight: 800;
+            text: "All Clean!";
+            color: Theme.text_primary;
+            horizontal-alignment: center;
+        }
+
+        Text {
+            font-size: 0.95rem;
+            color: Theme.text_tertiary;
+            horizontal-alignment: center;
+            text: "Your projects have been cleaned successfully";
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    HorizontalLayout {
+        spacing: 20px;
+        padding-top: 5px;
+        alignment: center;
+        padding-bottom: 5px;
+
+        VerticalLayout {
+            spacing: 5px;
+            alignment: center;
+
+            Text {
+                text: "1";
+                font-weight: 800;
+                font-size: 2.4rem;
+                color: Theme.text_primary;
+                horizontal-alignment: center;
+            }
+
+            Text {
+                font-size: 0.8rem;
+                text: "Projects Cleaned";
+                color: Theme.text_tertiary;
+                horizontal-alignment: center;
+            }
+        }
+
+        VerticalLayout {
+            alignment: center;
+
+            VerticalDivider {
+                height: 40px;
+            }
+        }
+
+        VerticalLayout {
+            spacing: 5px;
+            alignment: center;
+
+            Text {
+                text: "724.6 MB";
+                font-weight: 800;
+                font-size: 2.4rem;
+                color: Theme.accent;
+                horizontal-alignment: center;
+            }
+
+            Text {
+                font-size: 0.8rem;
+                text: "Space Recovered";
+                color: Theme.text_tertiary;
+                horizontal-alignment: center;
+            }
+        }
+
+        VerticalLayout {
+            alignment: center;
+
+            VerticalDivider {
+                height: 40px;
+            }
+        }
+
+        VerticalLayout {
+            spacing: 5px;
+            alignment: center;
+
+            Text {
+                text: "1.8s";
+                font-weight: 800;
+                font-size: 2.4rem;
+                color: Theme.text_primary;
+                horizontal-alignment: center;
+            }
+
+            Text {
+                text: "Duration";
+                font-size: 0.8rem;
+                color: Theme.text_tertiary;
+                horizontal-alignment: center;
+            }
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    HorizontalLayout {
+        spacing: 10px;
+        alignment: center;
+
+        TextIconButton {
+            icon_size: 12px;
+            font-weight: 500;
+            border-width: 1px;
+            text: "Dashboard";
+            font-size: 0.82rem;
+            source: Icons.dashboard;
+            background: transparent;
+            border-radius: self.height / 2;
+            text_color: self.has-hover ? Theme.accent : Theme.text_tertiary;
+            icon_color: self.has-hover ? Theme.accent : Theme.text_tertiary;
+            border-color: self.has-hover ? Theme.accent : Theme.border_primary;
+
+            clicked => dashboard();
+
+            animate text_color, icon_color, border-color { duration: 100ms; }
+        }
+
+        TextIconButton {
+            icon_size: 12px;
+            text: "New Scan";
+            font-size: 0.82rem;
+            source: Icons.search;
+            border-radius: self.height / 2;
+            background: @linear-gradient(135deg, self.has-hover ? Theme.accent_dark : Theme.accent, self.has-hover ? Theme.accent : Theme.accent_dark);
+
+            clicked => new_scan();
+
+            animate background { duration: 100ms; }
+        }
+    }
+}

@@ -1,15 +1,10 @@
 import { Theme } from "../../theme/theme.slint";
-export component VerticalDivider {
+export component VerticalDivider inherits Rectangle {
     in property <length> thickness: 1px;
     in property <length> height_size: 100px;
-    in property <brush> color: Theme.border_secondary;
+    in property <brush> bg_color: Theme.border_secondary;
 
+    background: bg_color;
     width: root.thickness;
     height: root.height_size;
-
-    Rectangle {
-        width: parent.width;
-        height: parent.height;
-        background: root.color;
-    }
 }

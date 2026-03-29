@@ -1,0 +1,10 @@
+export enum ScanCleanPhase {
+    StartScan, // 1
+    StartClean, // 3
+    CleanSuccessful, // 5
+    ProcessingPhase, // 2 & 4
+}
+
+export global ScanAndCleanPageData {
+    in-out property <ScanCleanPhase> current_phase: ScanCleanPhase.StartScan;
+}
