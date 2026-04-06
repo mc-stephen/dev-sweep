@@ -4,14 +4,13 @@ import { Icons } from "./services/icons.slint";
 import { NavItem } from "components/nav_item.slint";
 import { CleanersPage } from "pages/cleaners/cleaners.slint";
 import { SettingsPage } from "pages/settings/settings.slint";
+import { ActivityPage } from "pages/activity/activity.slint";
 import { ToggleSwitch } from "components/toggle_switch.slint";
 import { TextField } from "components/inputs/text_field.slint";
 import { DashboardPage } from "pages/dashboard/dashboard.slint";
 import { AppWindowData, TabPages } from "./app_window_data.slint";
 import { IconButton } from "components/buttons/icon_button.slint";
 import { ScanAndCleanPage } from "pages/scan_clean/scan_clean.slint";
-import { ActivityLogPage } from "pages/activity_log/activity_log.slint";
-export { DashboardAdapter } from "./pages/dashboard/dashboard_data.slint";
 import { TrafficLight } from "components/window_control/traffic_light.slint";
 import { WindowButtons } from "components/window_control/window_buttons.slint";
 import { HorizontalDivider } from "components/divider/horizontal_divider.slint";
@@ -27,8 +26,11 @@ import {
     Switch,
 } from "std-widgets.slint";
 
-export { WindowControl, AppWindowData }
-export { CleanerGlobal, Cleaner, CleanTarget, CleanDetect, PathType } from "./global/cleaner_global.slint";
+export { WindowControl, AppWindowData, SettingsPage, Theme }
+export { ActivityData } from "./pages/activity/activity_data.slint";
+export { SettingsData } from  "./pages/settings/settings_data.slint";
+export { DashboardAdapter } from "./pages/dashboard/dashboard_data.slint";
+export { CleanersData, Cleaner, CleanTarget, CleanDetect, PathType } from "pages/cleaners/cleaners_data.slint";
 
 
 //======================================
@@ -152,9 +154,9 @@ export { CleanerGlobal, Cleaner, CleanTarget, CleanDetect, PathType } from "./gl
                 }
 
                 ToggleSwitch {
-                    checked: Theme.current_theme == ThemeType.Light;
+                    checked: Theme.theme == ThemeType.Light;
                     toggled => {
-                        Theme.current_theme = self.checked ? ThemeType.Light : ThemeType.Dark;
+                        Theme.theme = self.checked ? ThemeType.Light : ThemeType.Dark;
                     }
                 }
 
@@ -343,7 +345,7 @@ export component AppWindow inherits Window {
     preferred-width: 1000px;
     preferred-height: 600px;
     background: transparent;
-    resize-border-width: 5px;
+    resize-border-width: 5px; // haven't find it usefulness yet
 
     Rectangle {
         clip: true;
@@ -382,7 +384,7 @@ export component AppWindow inherits Window {
                 if AppWindowData.active-page == TabPages.Dashboard: DashboardPage { }
                 if AppWindowData.active-page == TabPages.ScanClean: ScanAndCleanPage { }
                 if AppWindowData.active-page == TabPages.Cleaners: CleanersPage { }
-                if AppWindowData.active-page == TabPages.Activity: ActivityLogPage { }
+                if AppWindowData.active-page == TabPages.Activity: ActivityPage { }
                 if AppWindowData.active-page == TabPages.Settings: SettingsPage { }
             }
         }

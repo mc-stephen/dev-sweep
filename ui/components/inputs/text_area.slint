@@ -4,6 +4,9 @@ import { Theme } from "../../theme/theme.slint";
 export component TextArea inherits Rectangle {
     in property <string> placeholder;
     in property <length> font-size: 0.82rem;
+    in-out property <string> text <=> input.text;
+
+    callback edited(string);
 
     clip: true;
     min-height: 100px;
@@ -26,6 +29,7 @@ export component TextArea inherits Rectangle {
                 single-line: false;
                 font-size: font-size;
                 min-height: root.height;
+                edited => edited(self.text);
 
                 if (self.text == ""): Text {
                     x: 0px;

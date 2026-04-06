@@ -1,8 +1,8 @@
 import { Theme } from "../../../../theme/theme.slint";
 import { Icons } from "../../../../services/icons.slint";
 import { ScanCleanPhase } from "../../scan_clean_data.slint";
+import { ActivityData } from "../../../activity/activity_data.slint";
 import { TerminalLog } from "../../../../components/terminal_log.slint";
-import { ActivityLogData } from "../../../activity_log/activity_log_data.slint";
 
 //============================
 //
@@ -166,7 +166,7 @@ export component PhaseProcessing inherits VerticalLayout {
     //~~~~~~~~~~~~~~~~~~~~~~~~`
     TerminalLog {
         vertical-stretch: 1;
-        logs: ActivityLogData.logs;
+        logs: ActivityData.logs;
         background: Theme.bg_sidebar;
     }
 }

@@ -8,14 +8,14 @@ export enum LogStatus {
     Success,
 }
 
-export struct LogEntry {
+export struct Log {
     message: string,
     status: LogStatus,
     timestamp: string,
 }
 
 export component TerminalLog inherits Rectangle {
-    in property <[LogEntry]> logs;
+    in property <[Log]> logs;
 
     border-width: 1px;
     background: Theme.bg_primary;

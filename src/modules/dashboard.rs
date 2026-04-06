@@ -41,12 +41,12 @@ use std::rc::Rc;
 //===============================
 //
 //===============================
-pub struct DashboardModule {
+pub struct Dashboard {
     window: AppWindow,
     // quick_actions: [(&'static str, &'static str); 4],
 }
 
-impl DashboardModule {
+impl Dashboard {
     pub fn new(window: AppWindow) -> Self {
         Self {
             window,
@@ -57,6 +57,13 @@ impl DashboardModule {
             //     ("Documentation", "Learn how to create custom cleaners"),
             // ],
         }
+    }
+
+    //===============================
+    //
+    //===============================
+    pub fn init(&self) {
+        self.update_stats();
     }
 
     //===============================

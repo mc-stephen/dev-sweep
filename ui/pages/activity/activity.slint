@@ -1,11 +1,10 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
 import { ScrollView, ListView } from "std-widgets.slint";
-import { ActivityLogData, FilterBy } from "activity_log_data.slint";
+import { ActivityData, FilterBy } from "activity_data.slint";
 import { Card, CardHeader } from "../../components/cards/card.slint";
 import { GroupedOption } from "../../components/grouped_option.slint";
 import { RecentActivity } from "../../components/recent_activity.slint";
-import { GlobalRecentActivity } from "../../global/activities_global.slint";
 import {
     MyEmptyActivityComponent,
 } from "../../components/empty_activity.slint";
@@ -36,10 +35,10 @@ component ActivityTimeline inherits Card {
             spacing: 6px;
 
             GroupedOption {
-                data: ActivityLogData.filter_list;
-                selected: ActivityLogData.filterToString(ActivityLogData.filter_by);
+                data: ActivityData.timeline_filter;
+                selected: ActivityData.filterToString(ActivityData.filter_timeline_by);
                 clicked(val) => {
-                    ActivityLogData.filter_by = ActivityLogData.stringToFilter(val);
+                    ActivityData.filter_timeline_by = ActivityData.stringToFilter(val);
                 }
             }
 
@@ -62,15 +61,15 @@ component ActivityTimeline inherits Card {
         background: Theme.border_primary;
     }
 
-    if GlobalRecentActivity.activity.length == 0: MyEmptyActivityComponent { }
+    if ActivityData.timelines.length == 0: MyEmptyActivityComponent { }
 
-    if  GlobalRecentActivity.activity.length != 0: ListView {
+    if  ActivityData.timelines.length != 0: ListView {
         vertical-stretch: 1;
 
-        for data[i] in GlobalRecentActivity.activity: RecentActivity {
+        for data[i] in ActivityData.timelines: RecentActivity {
             i: i;
             data: data;
-            length: GlobalRecentActivity.activity.length;
+            length: ActivityData.timelines.length;
         }
     }
 }
@@ -78,7 +77,7 @@ component ActivityTimeline inherits Card {
 //==================================
 //
 //==================================
-component ActivityLog inherits Card {
+component Activity inherits Card {
 
     CardHeader {
         padding-top: 12px;
@@ -125,16 +124,16 @@ component ActivityLog inherits Card {
         padding: 15px;
 
         TerminalLog {
-            logs: ActivityLogData.logs;
+            logs: ActivityData.logs;
         }
     }
 }
 
-export component ActivityLogPage inherits VerticalLayout {
+export component ActivityPage inherits VerticalLayout {
     padding: 15px;
     spacing: 15px;
 
     ActivityTimeline { }
 
-    ActivityLog { }
+    Activity { }
 }

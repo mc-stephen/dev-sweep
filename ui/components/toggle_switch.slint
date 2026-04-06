@@ -1,6 +1,6 @@
 import { Theme } from "../theme/theme.slint";
 export component ToggleSwitch inherits Rectangle {
-    callback toggled;
+    callback toggled(bool);
     in-out property <string> text;
     in-out property <bool> checked;
     in-out property <bool> enabled <=> touch-area.enabled;
@@ -38,7 +38,7 @@ export component ToggleSwitch inherits Rectangle {
         height: root.height;
         clicked => {
             root.checked = !root.checked;
-            root.toggled();
+            root.toggled(root.checked);
         }
     }
 }

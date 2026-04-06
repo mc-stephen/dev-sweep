@@ -8,27 +8,29 @@ export enum ThemeType{
 }
 
 export global Theme {
-    in-out property <ThemeType> current_theme: ThemeType.Dark;
-    property <bool> is_dark_theme: current_theme == ThemeType.Dark;
+    in-out property <ThemeType> theme: themes[1];
+    property <bool> is_dark_theme: theme == ThemeType.Dark;
+    in-out property <[ThemeType]> themes: [ThemeType.Light, ThemeType.Dark];
 
     // Base palette
-    in-out property <color> accent: #6C5CE7;
+    in-out property <color> accent: accents[0];
     in-out property <color> accent_glow: #6c5ce74d;
     in-out property <color> accent_light: accent.brighter(0.3);
     in-out property <color> accent_dark: accent.with-alpha(0.3);
+    in-out property <[color]> accents: [#6C5CE7, #00B894, #E17055, #0984E3, #E84393, #FDCB6E];
 
     // Status colors
+    in-out property <color> info: #74B9FF;
+    in-out property <color> info_bg: info.with-alpha(0.12);
+
+    in-out property <color> danger: #E17055;
+    in-out property <color> danger_bg: danger.with-alpha(0.12);
+
     in-out property <color> success: #00B894;
     in-out property <color> success_bg: success.with-alpha(0.12);
 
     in-out property <color> warning: #FDCB6E;
     in-out property <color> warning_bg: warning.with-alpha(0.12);
-
-    in-out property <color> danger: #E17055;
-    in-out property <color> danger_bg: danger.with-alpha(0.12);
-
-    in-out property <color> info: #74B9FF;
-    in-out property <color> info_bg: info.with-alpha(0.12);
 
     // Backgrounds
     in-out property <color> bg_primary: is_dark_theme ? DarkTheme.bg_primary : LightTheme.bg_primary;

@@ -56,3 +56,7 @@ DevSweep uses a **JSON config plugin system**. To add support for a new project 
 | `estimated_savings` | `string` | Estimated disk space savings |
 
 ---
+Use this link to preview based64 data (https://base64-viewer.onrender.com)[Base64 Viewer]
+
+---
+Note: Cleaner ID must be same as file (Config) name

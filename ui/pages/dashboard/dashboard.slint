@@ -1,11 +1,10 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
-import { CleanerGlobal } from "../../global/cleaner_global.slint";
+import { CleanersData } from "../cleaners/cleaners_data.slint";
 import { StatCard } from "../../components/cards/stat_card.slint";
 import { RectCard } from "../../components/cards/rect_card.slint";
 import { Card, CardHeader } from "../../components/cards/card.slint";
 import { RecentActivity } from "../../components/recent_activity.slint";
-import { GlobalRecentActivity } from "../../global/activities_global.slint";
 import {
     QuickAction,
     DashboardAdapter,
@@ -22,6 +21,7 @@ import {
 import {
     MyEmptyActivityComponent,
 } from "../../components/empty_activity.slint";
+import { ActivityData } from "../activity/activity_data.slint";
 
 
 //===============================
@@ -166,15 +166,15 @@ export component DashboardPage inherits Flickable {
                     background: Theme.border_primary;
                 }
 
-                if GlobalRecentActivity.activity.length == 0: MyEmptyActivityComponent { }
+                if ActivityData.timeline.length == 0: MyEmptyActivityComponent { }
 
-                if  GlobalRecentActivity.activity.length != 0: ListView {
+                if  ActivityData.timeline.length != 0: ListView {
                     vertical-stretch: 1;
 
-                    for data[i] in GlobalRecentActivity.activity: RecentActivity {
+                    for data[i] in ActivityData.timeline: RecentActivity {
                         i: i;
                         data: data;
-                        length: GlobalRecentActivity.activity.length;
+                        length: ActivityData.timeline.length;
                     }
                 }
             }
@@ -202,20 +202,19 @@ export component DashboardPage inherits Flickable {
                 GridBox {
                     width: 100%;
 
-                    // for cleaner[i] in CleanerGlobal.cleaners: VerticalLayout {
-                    for cleaner[i] in 15: VerticalLayout {
+                    for cleaner[i] in CleanersData.cleaners: VerticalLayout {
                         row: Math.floor(i / plugin_per_row);
                         min-width: plugin-min-max-width.min;
 
                         RectCard {
-                            // title: cleaner.name;
-                            title: "cleaner.name";
-                            // source: cleaner.icon;
-                            source: Icons.search;
+                            title: cleaner.name;
+                            source: cleaner.icon;
                             x: self.has-hover ? 4px : 0px;
-                            // description: cleaner.description;
-                            description: "cleaner.description";
+                            description: cleaner.description;
                             max-width: plugin-min-max-width.max;
+                            // title: "cleaner.name";
+                            // source: Icons.search;
+                            // description: "cleaner.description";
 
                             animate x {
                                 easing: ease;

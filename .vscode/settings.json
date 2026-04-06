@@ -3,6 +3,7 @@
         "argb",
         "Flickable",
         "rgba",
+        "rusqlite",
         "serde",
         "slint",
         "topbar",

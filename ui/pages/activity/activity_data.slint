@@ -1,0 +1,78 @@
+import { Icons } from "../../services/icons.slint";
+import { Log, LogStatus } from "../../components/terminal_log.slint";
+import { GroupedOptionData } from "../../components/grouped_option.slint";
+
+export enum FilterBy {
+    All,
+    Scans,
+    Cleans,
+    Plugins,
+    Settings,
+}
+
+export struct Timeline {
+    tag: string,
+    icon: image,
+    time: string,
+    title: string,
+    sub_title: string,
+}
+
+export global ActivityData {
+    callback clear_log();
+    callback export_log();
+    callback update_log(Log);
+
+    callback clear_timeline();
+    callback filter_timeline(FilterBy);
+    callback update_timeline(Timeline);
+
+    in-out property <FilterBy> filter_timeline_by: FilterBy.All;
+    in-out property <[Timeline]> timelines: [
+        {
+            tag: "clean",
+            time: "2d ago",
+            icon: Icons.activeCleaner,
+            time: "Cleaning Complete",
+            sub_title: "8 projects cleaned · 4.2 GB recovered",
+        },
+    ];
+
+    in property <[GroupedOptionData]> timeline_filter: [
+        {
+            label: "All",
+            value: filterToString(FilterBy.All),
+        },
+        {
+            label: "Scans",
+            value: filterToString(FilterBy.Scans),
+        },
+        {
+            label: "Cleans",
+            value: filterToString(FilterBy.Cleans),
+        },
+        {
+            label: "Settings",
+            value: filterToString(FilterBy.Settings),
+        },
+        {
+            label: "Plugins",
+            value: filterToString(FilterBy.Plugins),
+        },
+    ];
+
+    in-out property <[Log]> logs: [
+        { message: "System initialized", timestamp: "00:00:01", status: LogStatus.Info },
+        { message: "User login successful", timestamp: "00:00:15", status: LogStatus.Success },
+        { message: "Failed to fetch API data", timestamp: "00:02:05", status: LogStatus.Danger },
+        { message: "Disk space low", timestamp: "00:05:00", status: LogStatus.Warning },
+    ];
+
+    pure public function filterToString(f: FilterBy) -> string {
+        return f == FilterBy.All ? "All" : f == FilterBy.Scans ? "Scans" : f == FilterBy.Cleans ? "Cleans" : f == FilterBy.Settings ? "Settings" : "Plugins";
+    }
+
+    pure public function stringToFilter(s: string) -> FilterBy {
+        return s == "All" ? FilterBy.All : s == "Scans" ? FilterBy.Scans : s == "Cleans" ? FilterBy.Cleans : s == "Settings" ? FilterBy.Settings : FilterBy.Plugins;
+    }
+}

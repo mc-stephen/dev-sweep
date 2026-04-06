@@ -1,0 +1,138 @@
+import { Theme } from "../theme/theme.slint";
+
+component Component inherits PopupWindow {
+    callback selected(int);
+
+    in property <[string]> model;
+    in-out property <int> selected-index;
+
+    in property <length> parent_x;
+    in property <length> parent_y;
+
+    in property <length> font-size;
+    in property <brush> text-color;
+    in property <brush> background;
+    in property <brush> border-color;
+    in property <brush> primary-color;
+    in property <length> border-width;
+    in property <length> border-radius;
+
+    in property <length> parent-width;
+    in property <length> parent-height;
+
+    x: 0px;
+    width: root.parent-width;
+    height: root.parent-height * model.length;
+    y: -root.parent-height * selected-index + (selected-index == -1 ? 4px : 0px);
+
+    Rectangle {
+        clip: true;
+        background: root.background;
+        border-width: root.border-width;
+        border-color: root.border-color;
+        border-radius: root.border-radius;
+
+        VerticalLayout {
+
+            for item[i] in model: Rectangle {
+                property <bool> is-selected: i == root.selected-index;
+
+                height: root.parent-height;
+                background: option.has-hover || is-selected ? root.primary_color.with-alpha(0.1) : transparent;
+
+                HorizontalLayout {
+                    padding-left: 13px;
+
+                    Text {
+                        y: 1px;
+                        text: item;
+                        font-size: root.font-size;
+                        vertical-alignment: center;
+                        color: option.has-hover || is-selected ? root.primary_color : root.text-color;
+                    }
+                }
+
+                option := TouchArea {
+                    clicked => selected(i);
+                }
+            }
+        }
+    }
+}
+
+export component Dropdown inherits Rectangle {
+    width: 180px;
+    height: 30px;
+    border-width: 1px;
+    border-radius: 8px;
+    border-color: #ccc;
+    background: #1e1e1e;
+
+    property <bool> open: false;
+
+    in property <length> text-font-size;
+    in property <brush> text-color: #fff;
+    in property <string> placeholder: "Select...";
+    in property <color> primary-color: Theme.accent_light;
+
+    in-out property <[string]> model: [];
+    in-out property <int> selected-idx: -1;
+
+    out property <bool> has-hover <=> ta.has-hover;
+
+    callback selected-index(int);
+    callback selected-value(string);
+
+    ta := TouchArea {
+        mouse-cursor: pointer;
+        clicked => {
+            if (model.length != 0) {
+                popup.show();
+            }
+        }
+    }
+
+    HorizontalLayout {
+        padding-left: 13px;
+        padding-right: 10px;
+        alignment: space-between;
+
+        Text {
+            y: 1px;
+            color: text_color;
+            height: parent.height;
+            font-size: text-font-size;
+            width: parent.width - 40px;
+            vertical-alignment: center;
+            horizontal-alignment: left;
+            text: root.selected-idx >= 0 ? root.model[root.selected-idx] : placeholder;
+        }
+
+        Text {
+            text: "▼";
+            height: parent.height;
+            font-size: text-font-size;
+            vertical-alignment: center;
+            color: text_color.with-alpha(0.5);
+        }
+    }
+
+    popup := Component {
+        model: root.model;
+        parent-width: root.width;
+        parent-height: root.height;
+        text-color: root.text-color;
+        background: root.background;
+        font-size: root.text-font-size;
+        border-width: root.border-width;
+        border-color: root.border-color;
+        primary-color: root.primary-color;
+        border-radius: root.border-radius;
+        selected-index: root.selected-idx;
+        selected(index) => {
+            selected-idx = index;
+            selected-index(index);
+            selected-value(model[index]);
+        }
+    }
+}

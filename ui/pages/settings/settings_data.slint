@@ -1,4 +1,5 @@
 import { Icons } from "../../services/icons.slint";
+import { ThemeType } from "../../theme/theme.slint";
 
 struct ProjectLink {
     icon: image,
@@ -7,9 +8,34 @@ struct ProjectLink {
 }
 
 export global SettingsData {
-    out property <[color]> theme_colors: [#6C5CE7, #00B894, #E17055, #0984E3, #E84393, #FDCB6E];
+    callback update_accent_colors(color);
 
-    out property <[ProjectLink]> project_links: [
+    in-out property <string> app_version: "1.0.0";
+
+    callback update_dry_run(bool);
+    in-out property <bool> dry_run: false;
+
+    callback update_compact_mode(bool);
+    in-out property <bool> compact_mode: false;
+
+    callback update_skip_git_repo(bool);
+    in-out property <bool> skip_git_repo: false;
+
+    callback update_cleaner_config_path();
+    in-out property <string> cleaner_config_path: "";
+
+    callback update_theme(ThemeType);
+    in-out property <[string]> themes: ["Light Mode", "Dark Mode"];
+
+    callback update_auto_reload_configs(bool);
+    in-out property <bool> auto_reload_configs: false;
+
+    callback update_exclude_path(string);
+    in-out property <string> exclude_path: "";
+
+    callback click_project_links(string);
+    out property <string> creator_link: "https://mc-stephen.dev";
+    in-out property <[ProjectLink]> project_links: [
         {
             label: "GitHub",
             icon: Icons.github,

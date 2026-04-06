@@ -1,14 +1,10 @@
 import { Theme } from "../../theme/theme.slint";
 import { Icons } from "../../services/icons.slint";
-import { CleanersData } from "cleaners_data.slint";
+import { CleanersData, PathType } from "cleaners_data.slint";
 import { TextArea } from "../../components/inputs/text_area.slint";
 import { Card, CardHeader } from "../../components/cards/card.slint";
 import { TextButton } from "../../components/buttons/text_button.slint";
 import { IconButton } from "../../components/buttons/icon_button.slint";
-import {
-    CleanerGlobal,
-    PathType,
-} from "../../global/cleaner_global.slint";
 import {
     TextIconButton,
 } from "../../components/buttons/text_icon_button.slint";
@@ -45,7 +41,7 @@ component Modal inherits Rectangle {
                     padding: 15px;
                     spacing: 12px;
 
-                    TextArea {
+                    config_ta := TextArea {
                         height: 200px;
                         background: Theme.bg_primary;
                         placeholder: "Add cleaner config text here, e.g {...}";
@@ -71,14 +67,17 @@ component Modal inherits Rectangle {
                                 border-radius: 3px;
                                 background: Theme.bg_tertiary;
                                 border-color: Theme.border_primary;
+
                                 HorizontalLayout {
                                     padding: 2px;
                                     alignment: start;
                                     padding-left: 5px;
                                     padding-right: 5px;
+
                                     Rectangle {
                                         width: schema_key.width;
                                         height: schema_key.height;
+
                                         schema_key := Text {
                                             y: 0.8px;
                                             text: schema.key;
@@ -122,6 +121,7 @@ component Modal inherits Rectangle {
                         text: "Save Cleaner";
                         source: Icons.addCleaner;
                         background: Theme.accent_dark;
+                        clicked => CleanersData.add_new_cleaner(config_ta.text);
                     }
                 }
             }
@@ -243,7 +243,7 @@ component BodyComponent inherits GridLayout {
     spacing: 10px;
     horizontal-stretch: 1;
 
-    for cleaner[i] in CleanerGlobal.cleaners: Rectangle {
+    for cleaner[i] in CleanersData.cleaners: Rectangle {
         // max-width: 1000px;
         clip: true;
         border-width: 1px;
@@ -270,9 +270,8 @@ component BodyComponent inherits GridLayout {
                 x: self.width / 2 - (self.has_hover ? edit_btn.icon_size / 1.5 : 12px),
                 y: self.height / 2 - (self.has_hover ? edit_btn.icon_size / 1.5 : 12px)
             };
-            clicked => {
-                //
-            }
+
+            clicked => CleanersData.edit_existing_cleaner(cleaner);
 
             animate x, y {
                 duration: 0.1s;
@@ -507,7 +506,7 @@ export component CleanersPage inherits Rectangle {
         }
     }
 
-    popup := Modal {
+    Modal {
         visible: CleanersData.show_model;
     }
 }

@@ -1,0 +1,27 @@
+{
+  "id": "flutter",
+  "name": "Flutter",
+  "color": "#FFFFFF",
+  "clean_command": "flutter clean",
+  "estimated_savings": "200MB - 2GB",
+  "restore_command": "flutter pub get",
+  "description": "Flutter build cache and ephemeral files",
+  "icon": "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAACj0lEQVR4nO3cwWoTQQDG8Y0zVp8iFPHgyUtBjxt1LgqCCJuA9SE86sle7Vkt6eKpSJo8gTfFDXjpK4RYo0+Q4kXKSKDYUGJMsjvZz+T/h+++w485LbtRRERERERERLmLv/jNWuZbta7vBFvmd5OON/mfdsVzma/GXd+rdb0Ptbjrj+9l/lrZZ5XPgaGTA0MnB4ZODgydHBg6OTB0cmDo5MDQyYGhkwNDJweGTg4MnRwYOjkwdHJg6OTA0MmBoRMYQoEhFBhCgSEUGEKBIRQYQoEhFBhCgSEUGEKBIRQYQoEhFBhCgSEUGEKBIZQqxt3P/uadzG+F3NaRvxwppYoRZ34n5DOd7WWkFBhCgSEUGGKFBonB0EGJwdBBAUMIBQwhFDCEUMAQQlkEY6Nz8uL2p9NBSIwReLQqzYqyCIZpD3dM+8Tb9vDHrY+n37gZBaHkwTBnC4Syehj/QikCw4RBWV2Mv6EUiWGKRVl9jIsoITBMMSjrgzH+h9DRQmCYfCjrh7FIZk6MBVHACIlh5kMBYxkYZjYUMJaJYaajgFEGhpmMAsYsXTocPguBYc5RBjda31+Vfc7/p87Pqjkc9oKBbB/0rzx488s+asZlHzVadxS7fdC/ev+1Hw2UklHsGAYoJaPYCRiglIRip2CAsmQUOwMGKEtCsXNgbDx86+3jpq/U00H05B2fNxSNYmfA+IPQSC/uGJQCUewUjCkIoIRAsRMw5kAApUgUO4aRAwGUIlDs0/e9AhFAydXzD9cr9fRrAIjz1dN+1Nib65Xzepc0q5X6fi8oCjdlzhJQ9EpA0SsBRa8EFL0SUPRKQNErAUWvBBS9GnublUbaqjT2O8FWT3ejpGPKPioREREREVGUs99gBs5373/4mgAAAABJRU5ErkJggg==",
+  "detect": [
+    { "label": "Pubspec file", "path": "pubspec.yaml", "type": "file" }
+  ],
+  "clean_targets": [
+    {
+      "safe": true,
+      "path": "build",
+      "type": "folder",
+      "label": "Build folder"
+    },
+    {
+      "safe": true,
+      "path": ".dart_tool",
+      "type": "folder",
+      "label": "Dart tool cache"
+    }
+  ]
+}

@@ -1,12 +1,12 @@
 import { Theme } from "../theme/theme.slint";
 import { Icons } from "../services/icons.slint";
-import { ActivityStruct } from "../global/activities_global.slint";
 import { HorizontalDivider } from "divider/horizontal_divider.slint";
+import { Timeline } from "../pages/activity/activity_data.slint";
 
 export component RecentActivity inherits VerticalLayout {
     in property <int> i;
     in property <int> length;
-    in property <ActivityStruct> data;
+    in property <Timeline> data;
 
     padding-left: 15px;
     padding-right: 15px;
