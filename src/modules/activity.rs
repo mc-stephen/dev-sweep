@@ -36,7 +36,7 @@ impl Activity {
         activity.on_update_log({
             let this_clone: Rc<RefCell<Activity>> = this.clone();
             move |data: Log| {
-                update_log(data);
+                this_clone.borrow().update_log(data);
             }
         });
 
@@ -60,7 +60,7 @@ impl Activity {
         activity.on_update_timeline({
             let this_clone: Rc<RefCell<Activity>> = this.clone();
             move |data: Timeline| {
-                update_timeline(data);
+                this_clone.borrow().update_timeline(data);
             }
         });
     }
@@ -68,7 +68,7 @@ impl Activity {
     //==============================
     //
     //==============================
-    fn update_log(&self, data: LLog) {
+    fn update_log(&self, data: Log) {
         //
     }
 

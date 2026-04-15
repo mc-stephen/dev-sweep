@@ -166,15 +166,15 @@ export component DashboardPage inherits Flickable {
                     background: Theme.border_primary;
                 }
 
-                if ActivityData.timeline.length == 0: MyEmptyActivityComponent { }
+                if ActivityData.timelines.length == 0: MyEmptyActivityComponent { }
 
-                if  ActivityData.timeline.length != 0: ListView {
+                if  ActivityData.timelines.length != 0: ListView {
                     vertical-stretch: 1;
 
-                    for data[i] in ActivityData.timeline: RecentActivity {
+                    for data[i] in ActivityData.timelines: RecentActivity {
                         i: i;
                         data: data;
-                        length: ActivityData.timeline.length;
+                        length: ActivityData.timelines.length;
                     }
                 }
             }
